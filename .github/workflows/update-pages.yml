@@ -1,0 +1,37 @@
+name: Atualizar catálogo de páginas
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "paginas/**/*.html"
+      - "scripts/build_pages.py"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-catalog:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Gerar pages.json
+        run: python scripts/build_pages.py
+
+      - name: Publicar catálogo atualizado
+        run: |
+          if git diff --quiet -- pages.json; then
+            echo "Nenhuma alteração no catálogo."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add pages.json
+          git commit -m "Atualiza catálogo de páginas"
+          git push
