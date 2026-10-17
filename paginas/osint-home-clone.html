@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#020402">
+  <meta name="description" content="Clone visual demonstrativo inspirado na página inicial do OSINT-UI.">
+  <meta name="category" content="Clones visuais">
+  <meta name="keywords" content="OSINT, homepage, clone, terminal, neon, interface">
+  <title>OSINT-UI Home Clone</title>
+  <style>
+    :root{--bg:#020402;--panel:#071007;--panel2:#0b150b;--line:#163216;--green:#39ff4f;--green2:#1ab72d;--text:#ecf5ec;--muted:#7f897f;--soft:#122012;--shadow:0 0 35px rgba(57,255,79,.12)}
+    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(circle at 70% 0%,rgba(57,255,79,.07),transparent 28rem),#020402;color:var(--text);font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;min-height:100vh}a{color:inherit;text-decoration:none}button,input{font:inherit}.wrap{width:min(1180px,calc(100% - 30px));margin:auto}.top{height:74px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #151b15;position:sticky;top:0;background:rgba(2,4,2,.92);backdrop-filter:blur(14px);z-index:10}.brand{font-size:24px;font-weight:900;letter-spacing:.06em;color:var(--green);text-shadow:0 0 18px rgba(57,255,79,.28)}.nav{display:flex;gap:22px;align-items:center;color:#b3bcb3;font-size:14px}.nav a:hover{color:var(--green)}.hero{padding:82px 0 56px;display:grid;grid-template-columns:1.2fr .8fr;gap:46px;align-items:center}.eyebrow{display:inline-flex;gap:8px;align-items:center;color:var(--green);border:1px solid #205c25;background:rgba(57,255,79,.05);padding:7px 10px;border-radius:999px;font-size:12px}.hero h1{font-size:clamp(48px,8vw,94px);line-height:.92;letter-spacing:-.06em;margin:22px 0 18px}.hero p{color:#a6afa6;font-size:clamp(16px,2vw,20px);line-height:1.7;max-width:760px}.terminal{border:1px solid #1b2c1b;background:linear-gradient(180deg,#071007,#040704);box-shadow:var(--shadow);border-radius:16px;overflow:hidden}.term-head{height:44px;border-bottom:1px solid #173017;display:flex;align-items:center;justify-content:space-between;padding:0 14px;color:#819081;font-size:12px}.dots{display:flex;gap:6px}.dots i{width:8px;height:8px;border-radius:50%;background:#245a29}.term-body{padding:18px}.label{font-size:12px;color:#7e897e;margin-bottom:8px}.searchrow{display:flex;gap:10px}.searchrow input{flex:1;min-width:0;height:52px;background:#0a0f0a;border:1px solid #263626;border-radius:10px;color:#d9e4d9;padding:0 14px;outline:none}.searchrow input:focus{border-color:#2f8d3a;box-shadow:0 0 0 3px rgba(57,255,79,.06)}.go{height:52px;padding:0 20px;border-radius:10px;border:1px solid #3b8e44;background:linear-gradient(#179126,#0e721b);color:#dfffe3;font-weight:800;cursor:pointer}.go:hover{filter:brightness(1.1)}.demo-note{margin-top:11px;color:#667066;font-size:11px}.actions{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:0 15px;border-radius:9px;border:1px solid #284b2b;background:#081108;color:#b9c7b9;font-size:13px}.btn.primary{border-color:#2c8736;color:var(--green);background:#0a1a0b}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:#152015;border:1px solid #152015;border-radius:14px;overflow:hidden;margin:18px 0 80px}.stat{background:#060a06;padding:24px 18px}.stat strong{display:block;font-size:25px;color:var(--green);margin-bottom:6px}.stat span{color:#737d73;font-size:12px}.section{padding:34px 0 72px}.section h2{font-size:34px;margin:0 0 10px;letter-spacing:-.03em}.section>.sub{color:#818b81;max-width:760px;line-height:1.7;margin:0 0 26px}.tri{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.info{border:1px solid #182818;background:#060b06;border-radius:14px;padding:22px;min-height:170px}.info h3{margin:0 0 10px;color:#e8f1e8}.info p{margin:0;color:#7f897f;line-height:1.65;font-size:14px}.warning{margin-top:14px;border:1px solid #342f18;background:#100f06;border-radius:14px;padding:20px;color:#b9b28c;line-height:1.65}.tools{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.tool{border:1px solid #182818;background:linear-gradient(180deg,#071007,#050805);border-radius:13px;padding:17px;min-height:150px;transition:.18s ease}.tool:hover{transform:translateY(-2px);border-color:#28672f;box-shadow:0 12px 36px rgba(0,0,0,.22)}.tool .ico{width:34px;height:34px;border:1px solid #22662b;border-radius:9px;display:grid;place-items:center;color:var(--green);margin-bottom:16px}.tool h3{margin:0 0 8px;font-size:15px}.tool p{margin:0;color:#737d73;font-size:12px;line-height:1.6}.cta{border:1px solid #1e4c22;background:radial-gradient(circle at 80% 0%,rgba(57,255,79,.09),transparent 24rem),#061006;border-radius:16px;padding:32px;display:flex;align-items:center;justify-content:space-between;gap:20px}.cta h3{font-size:28px;margin:0 0 8px}.cta p{margin:0;color:#7f897f}.footer{border-top:1px solid #141b14;padding:28px 0 42px;margin-top:72px;color:#657065;font-size:12px;display:flex;justify-content:space-between;gap:18px;flex-wrap:wrap}.badge-demo{position:fixed;right:12px;bottom:12px;background:#0b120b;border:1px solid #2e6c35;color:var(--green);padding:8px 11px;border-radius:9px;font-size:11px;z-index:20;box-shadow:var(--shadow)}
+    @media(max-width:900px){.hero{grid-template-columns:1fr}.tools{grid-template-columns:repeat(2,1fr)}.tri{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.nav{gap:12px}.nav .hide{display:none}}
+    @media(max-width:560px){.wrap{width:min(100% - 22px,1180px)}.top{height:64px}.brand{font-size:20px}.hero{padding-top:48px}.hero h1{font-size:56px}.searchrow{flex-direction:column}.go{width:100%}.tools{grid-template-columns:1fr}.stats{grid-template-columns:1fr}.cta{align-items:flex-start;flex-direction:column}.nav{font-size:12px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header class="top">
+      <a class="brand" href="#">OSINT-UI</a>
+      <nav class="nav">
+        <a href="#tools">Ferramentas</a>
+        <a class="hide" href="#about">Como funciona</a>
+        <a href="../">Pages</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div>
+          <span class="eyebrow">● laboratório OSINT no navegador</span>
+          <h1>Investigue dados públicos em um só lugar.</h1>
+          <p>Interface demonstrativa inspirada na home do OSINT-UI: centralize consultas sobre usuários, e-mails, telefones, domínios, IPs, vazamentos, Telegram, GitHub e outras fontes abertas.</p>
+          <div class="actions"><a class="btn primary" href="#tools">Ver ferramentas</a><a class="btn" href="https://osint-ui.com" target="_blank" rel="noopener">Abrir site original ↗</a></div>
+        </div>
+
+        <div class="terminal">
+          <div class="term-head"><span>investigation.console</span><span class="dots"><i></i><i></i><i></i></span></div>
+          <div class="term-body">
+            <div class="label">Dado a investigar</div>
+            <div class="searchrow"><input id="target" placeholder="usuário, email, telefone ou domínio" autocomplete="off"><button class="go" id="go">Investigar</button></div>
+            <div class="demo-note" id="demoNote">Modo demonstração. Nenhum dado é enviado ou armazenado.</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="stats">
+        <div class="stat"><strong>15k+</strong><span>analistas cadastrados</span></div>
+        <div class="stat"><strong>45k+</strong><span>investigações realizadas</span></div>
+        <div class="stat"><strong>110</strong><span>países alcançados</span></div>
+        <div class="stat"><strong>RGPD</strong><span>foco em privacidade</span></div>
+      </section>
+
+      <section class="section" id="about">
+        <h2>Uma interface, várias fontes.</h2>
+        <p class="sub">O conceito central é reunir diversas ferramentas OSINT numa mesma tela e facilitar o cruzamento entre resultados, em vez de deixar você abrindo quinze abas e perdendo a vontade de viver no processo.</p>
+        <div class="tri">
+          <article class="info"><h3>Tudo em um lugar</h3><p>Consultas sobre usuário, e-mail, telefone, domínio, IP, cripto, Telegram e outras fontes públicas ficam reunidas numa única experiência.</p></article>
+          <article class="info"><h3>Dados conectados</h3><p>Os resultados podem ser tratados como entidades relacionadas, ajudando a visualizar vínculos e possíveis pivôs entre diferentes fontes.</p></article>
+          <article class="info"><h3>Resultados verificáveis</h3><p>A proposta é indicar de onde veio cada descoberta e reduzir falsos positivos, em vez de apenas exibir qualquer coisa que pareça combinar.</p></article>
+        </div>
+        <div class="warning"><strong>O que não faz:</strong> esta demo não acessa contas, não lê mensagens privadas e não executa buscas reais. Ela reproduz apenas a experiência visual da página pública.</div>
+      </section>
+
+      <section class="section" id="tools">
+        <h2>Ferramentas disponíveis</h2>
+        <p class="sub">Uma amostra visual das categorias exibidas pelo serviço original.</p>
+        <div class="tools">
+          <article class="tool"><div class="ico">◎</div><h3>Investigation Graph</h3><p>Relaciona entidades e ajuda a visualizar conexões entre descobertas.</p></article>
+          <article class="tool"><div class="ico">@</div><h3>Username Analyzer</h3><p>Procura presença pública de nomes de usuário em diferentes plataformas.</p></article>
+          <article class="tool"><div class="ico">☎</div><h3>Phone Analyzer</h3><p>Organiza informações públicas associadas a números de telefone.</p></article>
+          <article class="tool"><div class="ico">#</div><h3>Dorks Generator</h3><p>Monta consultas avançadas para mecanismos de busca.</p></article>
+          <article class="tool"><div class="ico">✉</div><h3>Email Analyzer</h3><p>Centraliza sinais públicos ligados a endereços de e-mail.</p></article>
+          <article class="tool"><div class="ico">◇</div><h3>Domain Analyzer</h3><p>Resume DNS, certificados, subdomínios e outras pistas de domínio.</p></article>
+          <article class="tool"><div class="ico">⌁</div><h3>Web Crawler</h3><p>Mapeia páginas e elementos públicos encontrados em um site.</p></article>
+          <article class="tool"><div class="ico">IP</div><h3>IP Analyzer</h3><p>Reúne contexto de ASN, geolocalização e reputação de IPs.</p></article>
+          <article class="tool"><div class="ico">◉</div><h3>Leak Check</h3><p>Consulta sinais públicos de exposição em bases e fontes de vazamentos.</p></article>
+          <article class="tool"><div class="ico">◌</div><h3>Onion Finder</h3><p>Ajuda a localizar referências públicas relacionadas a serviços onion.</p></article>
+          <article class="tool"><div class="ico">▧</div><h3>Reverse Image</h3><p>Organiza caminhos para investigar a origem e reutilização de imagens.</p></article>
+          <article class="tool"><div class="ico">TG</div><h3>Telegram OSINT</h3><p>Consulta informações públicas de usuários, canais, grupos e bots.</p></article>
+          <article class="tool"><div class="ico">Σ</div><h3>Hash Analyzer</h3><p>Identifica formatos de hash e aponta recursos relacionados.</p></article>
+          <article class="tool"><div class="ico">⇄</div><h3>Port Scanner</h3><p>Apresenta informações públicas sobre serviços expostos em rede.</p></article>
+          <article class="tool"><div class="ico">EX</div><h3>Metadata Extractor</h3><p>Mostra metadados presentes em arquivos e imagens quando disponíveis.</p></article>
+          <article class="tool"><div class="ico">GH</div><h3>GitHub OSINT</h3><p>Resume perfis, repositórios, commits e sinais públicos do GitHub.</p></article>
+        </div>
+      </section>
+
+      <section class="cta">
+        <div><h3>Clone visual concluído.</h3><p>O original continua sendo o serviço funcional. Esta página existe só para reproduzir o design e a estrutura.</p></div>
+        <a class="btn primary" href="https://osint-ui.com" target="_blank" rel="noopener">Visitar OSINT-UI ↗</a>
+      </section>
+    </main>
+
+    <footer class="footer"><span>Clone demonstrativo • sonyddr666 / Pages</span><span>Inspirado na interface pública do OSINT-UI</span></footer>
+  </div>
+  <div class="badge-demo">DEMO • SEM ENVIO DE DADOS</div>
+
+  <script>
+    const input=document.getElementById('target');const go=document.getElementById('go');const note=document.getElementById('demoNote');
+    go.addEventListener('click',()=>{const v=input.value.trim();note.textContent=v?`Demo: “${v}” seria enviado para uma ferramenta de investigação. Aqui nada sai do navegador.`:'Digite algum dado para simular a ação.';});
+    input.addEventListener('keydown',e=>{if(e.key==='Enter')go.click();});
+  </script>
+</body>
+</html>
