@@ -1,6 +1,23 @@
 {
   "pages": [
     {
+      "title": "OSINT-UI Home Clone",
+      "description": "Clone visual demonstrativo inspirado na página inicial do OSINT-UI.",
+      "file": "osint-home-clone.html",
+      "category": "Clones visuais",
+      "tags": [
+        "OSINT",
+        "homepage",
+        "clone",
+        "terminal",
+        "neon",
+        "interface"
+      ],
+      "created": "2026-10-17",
+      "updated": "2026-10-17",
+      "views": 0
+    },
+    {
       "title": "OSINT Register Demo",
       "description": "Mockup visual inspirado na tela de cadastro OSINT-UI, sem envio de dados.",
       "file": "osint-register-demo.html",
