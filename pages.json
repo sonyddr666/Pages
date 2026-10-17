@@ -1,6 +1,23 @@
 {
   "pages": [
     {
+      "title": "ROBOT — Wireless Lab",
+      "description": "Página conceitual responsiva inspirada no ritmo visual do High Boy, com identidade ROBOT, mockup próprio e seções interativas.",
+      "file": "robot.html",
+      "category": "Clones visuais",
+      "tags": [
+        "ROBOT",
+        "hardware",
+        "wireless",
+        "landing page",
+        "responsive",
+        "interface"
+      ],
+      "created": "2026-10-17",
+      "updated": "2026-10-17",
+      "views": 0
+    },
+    {
       "title": "OSINT-UI Home Clone",
       "description": "Clone visual demonstrativo inspirado na página inicial do OSINT-UI.",
       "file": "osint-home-clone.html",
