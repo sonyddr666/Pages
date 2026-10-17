@@ -6,6 +6,7 @@ on:
     paths:
       - "paginas/**/*.html"
       - "scripts/build_pages.py"
+      - ".github/workflows/update-pages.yml"
   workflow_dispatch:
 
 permissions:
