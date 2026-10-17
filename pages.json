@@ -1,8 +1,8 @@
 {
   "pages": [
     {
-      "title": "ROBOT — Pocket Wireless Lab",
-      "description": "ROBOT — conceito independente de uma plataforma portátil para exploração de sinais, hardware e software aberto.",
+      "title": "robot — pocket wireless research tool",
+      "description": "robot — ferramenta portátil para exploração wireless e hardware.",
       "file": "robot.html",
       "category": "Clones visuais",
       "tags": [
