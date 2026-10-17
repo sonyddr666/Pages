@@ -1,3 +1,21 @@
 {
-  "pages": []
+  "pages": [
+    {
+      "title": "OSINT Register Demo",
+      "description": "Mockup visual inspirado na tela de cadastro OSINT-UI, sem envio de dados.",
+      "file": "osint-register-demo.html",
+      "category": "Clones visuais",
+      "tags": [
+        "OSINT",
+        "cadastro",
+        "mockup",
+        "interface",
+        "neon",
+        "terminal"
+      ],
+      "created": "2026-10-17",
+      "updated": "2026-10-17",
+      "views": 0
+    }
+  ]
 }
