@@ -60,11 +60,11 @@
     .dots {display:flex;gap:6px}.dots i {display:block;width:8px;height:8px;background:#d1d2d0;border-radius:50%}.dots i:first-child {background:#ffb69b}.dots i:nth-child(2) {background:#f4d277}.dots i:nth-child(3) {background:#a9dca5}
     .board-label {display:flex;justify-content:space-between;align-items:center;padding:0 5px 13px;font-size:12px;font-weight:850}.board-label span {font-size:10px;color:#9b9b98}
     .mini-step {display:grid;grid-template-columns:37px 1fr auto;gap:11px;align-items:center;margin:7px 0;padding:13px 11px;border:1px solid #edebe6;border-radius:11px;background:#faf9f4;transition:transform .2s}
-    .mini-step:nth-child(3) {transform:translateX(12px);background:#eee9ff;border-color:#d7c9ff}
+    .mini-step.current {transform:translateX(12px);background:#eee9ff;border-color:#d7c9ff}
     .mini-step .n {display:grid;place-items:center;background:#ecece9;border-radius:10px;width:34px;height:34px;font-size:11px;font-weight:900}
-    .mini-step:nth-child(3) .n {background:#704fe3;color:#fff}
+    .mini-step.current .n {background:#704fe3;color:#fff}
     .mini-step b {display:block;font-size:12px;letter-spacing:-.01em}.mini-step small {font-size:10px;color:#8c8d88}.mini-step em {font-size:10px;color:#66826b;font-style:normal;font-weight:800}
-    .mini-step:nth-child(3) em {color:#6445d1}
+    .mini-step.current em {color:#6445d1}
     .board-foot {border-top:1px dashed #d7d7d1;margin-top:20px;padding-top:15px;display:flex;align-items:center;gap:11px;font-size:10px;color:#777}
     .board-foot strong {margin-left:auto;background:#d9f1dc;color:#246440;border-radius:20px;padding:6px 9px}
     .stat-strip {display:grid;grid-template-columns:repeat(3,1fr);gap:20px;border-top:1px solid #dddcd4;border-bottom:1px solid #dddcd4;padding:24px 0}
@@ -216,7 +216,7 @@
           <div class="board-label">PROTOCOLO DE CRIAÇÃO <span>5 ETAPAS</span></div>
           <div class="mini-step"><span class="n">01</span><div><b>Registrar ideia</b><small>Qual problema resolve?</small></div><em>PRONTO</em></div>
           <div class="mini-step"><span class="n">02</span><div><b>Checar alternativas</b><small>Já existe algo similar?</small></div><em>PRONTO</em></div>
-          <div class="mini-step"><span class="n">03</span><div><b>Protótipo mínimo</b><small>60–90 min · escopo fechado</small></div><em>AGORA</em></div>
+          <div class="mini-step current"><span class="n">03</span><div><b>Protótipo mínimo</b><small>60–90 min · escopo fechado</small></div><em>AGORA</em></div>
           <div class="mini-step"><span class="n">04</span><div><b>Validar de verdade</b><small>Teste reproduzível</small></div><em>DEPOIS</em></div>
           <div class="mini-step"><span class="n">05</span><div><b>Decidir destino</b><small>Continuar ou arquivar?</small></div><em>DEPOIS</em></div>
           <div class="board-foot"><span>●</span> Cada passo deixa um registro. <strong>Nada se perde.</strong></div>
