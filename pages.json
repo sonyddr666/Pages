@@ -4,8 +4,16 @@
       "title": "VoiceStudio × ElevenLabs — Laboratório de voz",
       "description": "Dossiê visual e interativo: VoiceStudio contra ElevenLabs, clonagem vocal, emoções, benchmarks em português e execução no Ryzen 5 5600 com RX 7600.",
       "file": "voicestudio-vs-elevenlabs.html",
-      "category": "Outros",
-      "tags": [],
+      "category": "Comparativos",
+      "tags": [
+        "VoiceStudio",
+        "ElevenLabs",
+        "clonagem de voz",
+        "TTS",
+        "áudio",
+        "Ryzen 5600",
+        "IA local"
+      ],
       "created": "2026-10-24",
       "updated": "2026-10-24",
       "views": 0
