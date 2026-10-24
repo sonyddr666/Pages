@@ -1,6 +1,25 @@
 {
   "pages": [
     {
+      "title": "Da ideia ao projeto — Sistema de Organização",
+      "description": "Um guia visual e interativo para transformar ideias soltas em projetos organizados no WSL, validados com critérios claros e versionados no GitHub.",
+      "file": "organizacao-projetos.html",
+      "category": "Guias interativos",
+      "tags": [
+        "organização",
+        "programação",
+        "WSL2",
+        "GitHub",
+        "projetos",
+        "produtividade",
+        "validação",
+        "tokens"
+      ],
+      "created": "2026-10-24",
+      "updated": "2026-10-24",
+      "views": 0
+    },
+    {
       "title": "ROBOT — Pocket Wireless Research Tool",
       "description": "ROBOT — ferramenta portátil para pesquisa wireless e hardware.",
       "file": "robot.html",
