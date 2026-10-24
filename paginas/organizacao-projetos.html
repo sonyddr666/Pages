@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f7f5ef">
+  <meta name="description" content="Um guia visual e interativo para transformar ideias soltas em projetos organizados no WSL, validados com critérios claros e versionados no GitHub.">
+  <meta name="category" content="Guias interativos">
+  <meta name="keywords" content="organização, programação, WSL2, GitHub, projetos, produtividade, validação, tokens">
+  <title>Da ideia ao projeto — Sistema de Organização</title>
+  <style>
+    :root {
+      --paper:#f7f5ef; --white:#fffefa; --ink:#222529; --muted:#6e7377; --line:#dcded8;
+      --violet:#6747e5; --violet-light:#ede8ff; --orange:#f5a54b; --peach:#ffe9d0;
+      --mint:#d7f3d7; --green:#2b7353; --night:#1f252d;
+      --shadow:0 18px 50px rgba(29,31,37,.085);
+      --round:24px; --width:1170px;
+    }
+    * {box-sizing:border-box}
+    html {scroll-behavior:smooth;scroll-padding-top:88px}
+    body {margin:0;background:var(--paper);color:var(--ink);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+    button,input,select,textarea {font:inherit}
+    button {cursor:pointer}
+    a {color:inherit;text-decoration:none}
+    a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible {outline:3px solid #aa97ff;outline-offset:3px}
+    .wrap {max-width:var(--width);margin:auto;padding:0 24px}
+    .caps {font-size:11px;letter-spacing:.16em;text-transform:uppercase;font-weight:850}
+    .muted {color:var(--muted)}
+    .eyebrow {display:inline-flex;align-items:center;gap:10px;border:1px solid #c9c1ea;background:#f1edff;color:#5e43c5;padding:9px 13px;border-radius:99px;font-size:11px;letter-spacing:.09em;font-weight:800;text-transform:uppercase}
+    .dot {display:inline-block;width:7px;height:7px;border-radius:50%;background:currentColor}
+    .topbar {position:sticky;top:0;z-index:40;background:rgba(247,245,239,.92);backdrop-filter:blur(18px);border-bottom:1px solid #deddd6}
+    .topbar-inner {min-height:70px;display:flex;align-items:center;gap:26px}
+    .brand {display:flex;align-items:center;gap:11px;font-size:15px;font-weight:900;white-space:nowrap;letter-spacing:-.03em}
+    .brand-icon {display:grid;place-items:center;width:32px;height:32px;background:var(--ink);color:white;border-radius:10px;transform:rotate(-7deg)}
+    .brand-icon svg {transform:rotate(7deg)}
+    .nav {display:flex;align-items:center;gap:26px;margin-left:auto}
+    .nav a {font-size:12px;font-weight:750;color:#626669;transition:color .2s}
+    .nav a:hover {color:var(--violet)}
+    .top-cta {padding:11px 15px;background:var(--ink);color:white;border-radius:10px;font-size:12px;font-weight:800;white-space:nowrap}
+    .top-cta:hover {background:#393b42}
+    .hero {position:relative;overflow:hidden;padding:88px 0 82px}
+    .hero::before {content:"";position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,#e9e2ff 0%,rgba(233,226,255,0) 70%);right:-260px;top:-240px;pointer-events:none}
+    .hero-grid {position:relative;display:grid;grid-template-columns:1.08fr .92fr;align-items:center;gap:70px}
+    h1,h2,h3,p {margin-top:0}
+    h1 {font-size:clamp(48px,5.8vw,82px);line-height:1.005;letter-spacing:-.074em;margin:27px 0 24px;font-weight:850}
+    .under {position:relative;color:var(--violet)}
+    .under::after {content:"";position:absolute;left:4%;right:1%;bottom:1px;height:8px;border-radius:50%;background:#c6b6ff;z-index:-1;transform:rotate(-1deg)}
+    .hero-desc {font-size:17px;line-height:1.77;color:#62686b;max-width:540px;margin-bottom:29px}
+    .action-row {display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+    .button {border:0;border-radius:12px;padding:15px 20px;font-weight:800;font-size:13px;display:inline-flex;align-items:center;justify-content:center;gap:9px;transition:transform .2s,box-shadow .2s}
+    .button:hover {transform:translateY(-2px)}
+    .button.primary {background:var(--violet);color:#fff;box-shadow:0 8px 21px #6747e52b}
+    .button.secondary {background:var(--white);border:1px solid #d7d5d0}
+    .button.dark {background:var(--night);color:white}
+    .button.ghost {background:transparent;border:1px solid #c9cbc6}
+    .helper {font-size:12px;color:#8a8c8b;margin:17px 0 0}
+    .hero-board {position:relative;background:#fffdf9;border:1px solid #d9d7ce;border-radius:22px;box-shadow:0 28px 70px rgba(44,33,73,.15);padding:18px;transform:rotate(2deg)}
+    .hero-board::before {content:"";position:absolute;width:120px;height:120px;border-radius:50%;background:#f7ba68;right:-32px;bottom:-37px;z-index:-1}
+    .board-top {display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #e5e4dc;padding:2px 3px 15px;margin-bottom:17px;font-size:11px;font-weight:800}
+    .dots {display:flex;gap:6px}.dots i {display:block;width:8px;height:8px;background:#d1d2d0;border-radius:50%}.dots i:first-child {background:#ffb69b}.dots i:nth-child(2) {background:#f4d277}.dots i:nth-child(3) {background:#a9dca5}
+    .board-label {display:flex;justify-content:space-between;align-items:center;padding:0 5px 13px;font-size:12px;font-weight:850}.board-label span {font-size:10px;color:#9b9b98}
+    .mini-step {display:grid;grid-template-columns:37px 1fr auto;gap:11px;align-items:center;margin:7px 0;padding:13px 11px;border:1px solid #edebe6;border-radius:11px;background:#faf9f4;transition:transform .2s}
+    .mini-step:nth-child(3) {transform:translateX(12px);background:#eee9ff;border-color:#d7c9ff}
+    .mini-step .n {display:grid;place-items:center;background:#ecece9;border-radius:10px;width:34px;height:34px;font-size:11px;font-weight:900}
+    .mini-step:nth-child(3) .n {background:#704fe3;color:#fff}
+    .mini-step b {display:block;font-size:12px;letter-spacing:-.01em}.mini-step small {font-size:10px;color:#8c8d88}.mini-step em {font-size:10px;color:#66826b;font-style:normal;font-weight:800}
+    .mini-step:nth-child(3) em {color:#6445d1}
+    .board-foot {border-top:1px dashed #d7d7d1;margin-top:20px;padding-top:15px;display:flex;align-items:center;gap:11px;font-size:10px;color:#777}
+    .board-foot strong {margin-left:auto;background:#d9f1dc;color:#246440;border-radius:20px;padding:6px 9px}
+    .stat-strip {display:grid;grid-template-columns:repeat(3,1fr);gap:20px;border-top:1px solid #dddcd4;border-bottom:1px solid #dddcd4;padding:24px 0}
+    .stat {display:flex;align-items:center;gap:13px;padding:6px 14px}.stat:not(:last-child) {border-right:1px solid #dcdad5}
+    .stat b {font-size:31px;line-height:1;letter-spacing:-.06em}.stat span {font-size:12px;color:#727673;max-width:150px;line-height:1.45}
+    section {scroll-margin-top:90px}
+    .section {padding:100px 0}
+    .section-head {display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:40px}
+    .section-kicker {color:var(--violet);margin-bottom:14px}
+    h2 {font-size:clamp(35px,4.15vw,55px);line-height:1.09;letter-spacing:-.061em;margin-bottom:0;font-weight:850}
+    .section-sub {max-width:400px;font-size:14px;color:var(--muted);line-height:1.75;margin:0}
+    .flow-grid {display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+    .flow-card {text-align:left;background:var(--white);border:1px solid #deddd6;border-radius:18px;padding:22px 17px 18px;min-height:254px;position:relative;transition:transform .2s,border-color .2s,box-shadow .2s}
+    .flow-card:hover,.flow-card.active {transform:translateY(-5px);border-color:#977dfa;box-shadow:0 15px 35px #312b4416}
+    .flow-card .flow-num {font-size:11px;color:#a0a2a0;letter-spacing:.1em;font-weight:900}
+    .flow-icon {margin:22px 0 27px;display:grid;place-items:center;width:48px;height:48px;border-radius:14px;background:#f1ecff;color:var(--violet)}
+    .flow-card:nth-child(2) .flow-icon {background:#ffeed6;color:#a46723}.flow-card:nth-child(3) .flow-icon {background:#def0e4;color:#287c4d}.flow-card:nth-child(4) .flow-icon {background:#e0edf9;color:#346a9a}.flow-card:nth-child(5) .flow-icon {background:#ffe4e0;color:#bf5952}
+    .flow-card h3 {font-size:17px;margin:0 0 10px;letter-spacing:-.03em}
+    .flow-card p {font-size:12px;color:#7a7e7d;line-height:1.6;margin:0}
+    .flow-card:after {content:"↗";position:absolute;top:16px;right:16px;font-size:16px;color:#aaa7a1}
+    .flow-detail {display:grid;grid-template-columns:90px 1fr auto;align-items:center;gap:18px;background:var(--night);color:#fff;padding:23px 30px;border-radius:18px;margin-top:16px;min-height:131px}
+    .step-counter {width:67px;height:67px;border-radius:14px;display:grid;place-items:center;background:#ffffff16;color:#d3c9ff;font-size:25px;font-weight:850}
+    .flow-detail h3 {margin:0 0 6px;font-size:20px;letter-spacing:-.04em}.flow-detail p {margin:0;color:#c6c8cb;font-size:13px;line-height:1.6;max-width:700px}
+    .detail-tag {padding:9px 12px;border:1px solid #6d7276;color:#c7cbd1;border-radius:30px;font-size:11px;white-space:nowrap}
+    .architecture {background:#ebece7;border-top:1px solid #d6d8d1;border-bottom:1px solid #d6d8d1}
+    .system-cards {display:grid;grid-template-columns:repeat(3,1fr);gap:15px;position:relative}
+    .system-card {position:relative;min-height:230px;border:1px solid #d7d8d1;background:#fffefa;padding:24px;border-radius:18px;overflow:hidden}
+    .system-card:nth-child(2) {background:#272d35;color:#fff;border-color:#272d35}
+    .sys-top {display:flex;align-items:center;justify-content:space-between;margin-bottom:34px}.system-card svg {width:28px;height:28px}
+    .sys-id {font-size:10px;letter-spacing:.14em;font-weight:800;opacity:.5}
+    .system-card h3 {font-size:22px;letter-spacing:-.04em;margin:0 0 9px}.system-card p {font-size:12px;line-height:1.75;color:#858985;margin:0;max-width:250px}.system-card:nth-child(2) p {color:#bcc1c7}
+    .sys-chip {display:inline-block;margin-top:20px;padding:7px 10px;background:#f0eeeb;border-radius:9px;font-size:10px;font-weight:800;color:#656966}.system-card:nth-child(2) .sys-chip {background:#414a55;color:#dce2eb}
+    .arch-grid {display:grid;grid-template-columns:.93fr 1.07fr;gap:24px;margin-top:22px}
+    .terminal {background:#1d232b;color:#dce2e5;border-radius:20px;padding:22px;box-shadow:var(--shadow);overflow:hidden}
+    .terminal-head {display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid #3c4249;padding-bottom:17px;margin-bottom:16px;color:#99a7b4;font-size:11px;font-weight:800;letter-spacing:.05em}
+    .terminal-body {font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;font-size:12px;line-height:2.15}
+    .tree-line {display:flex;align-items:center;gap:9px;border-radius:7px;padding:1px 8px;color:#b8c4cb}
+    .tree-line b {font-weight:650;color:#eef2f5}
+    .tree-line[data-folder] {cursor:pointer}
+    .tree-line[data-folder]:hover,.tree-line.sel {background:#39424b;color:white}
+    .tree-indent {margin-left:21px;border-left:1px solid #46505a;padding-left:12px}
+    .dir-mark {color:#f4c979}
+    .file-mark {color:#9da4aa}
+    .folder-inspect {background:var(--white);border:1px solid #dddcd6;border-radius:20px;padding:32px;display:flex;flex-direction:column;justify-content:center;min-height:340px}
+    .folder-inspect .folder-mark {width:57px;height:57px;display:grid;place-items:center;border-radius:16px;background:var(--peach);font-size:25px;margin-bottom:20px}
+    .folder-inspect h3 {font-size:28px;letter-spacing:-.055em;margin:0 0 9px}
+    .folder-inspect p {color:var(--muted);line-height:1.75;font-size:14px;min-height:74px}
+    .note {display:flex;align-items:flex-start;gap:12px;font-size:12px;color:#6a6c67;padding:14px;background:#f1efe9;border-radius:10px;line-height:1.65}
+    .note strong {color:#444846}
+    .planner-grid {display:grid;grid-template-columns:1fr 1fr;gap:22px}
+    .panel {border:1px solid #dcddd5;background:var(--white);border-radius:22px;padding:30px}
+    .panel h3 {font-size:22px;letter-spacing:-.045em;margin-bottom:8px}.panel-lead {font-size:13px;line-height:1.6;color:var(--muted);margin-bottom:25px}
+    .field {margin-bottom:18px}.field label {display:block;font-size:11px;letter-spacing:.04em;font-weight:850;margin-bottom:8px;color:#595d5b}
+    .field input,.field textarea,.field select {display:block;width:100%;border:1px solid #d9dad6;border-radius:10px;background:#fbfaf7;color:#2e3334;padding:12px 13px;font-size:13px;outline:none;transition:border-color .15s,box-shadow .15s}
+    .field input:focus,.field textarea:focus,.field select:focus {border-color:#9988e9;box-shadow:0 0 0 3px #e8e2ff}
+    .field textarea {resize:vertical;min-height:67px}
+    .dual {display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .plan-out {background:#252c34;color:#fff;border-radius:22px;padding:30px;display:flex;flex-direction:column;min-width:0}
+    .plan-out h3 {font-size:21px;letter-spacing:-.04em;margin:0 0 8px}.plan-out .panel-lead {color:#b2bac2}
+    .pill {align-self:flex-start;background:#3b4655;color:#e1d9ff;border-radius:99px;padding:7px 11px;font-size:10px;font-weight:800;letter-spacing:.07em}
+    .readme {font-family:ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;white-space:pre-wrap;word-break:break-word;background:#1c2229;border:1px solid #424950;border-radius:12px;padding:20px;font-size:11px;line-height:1.9;color:#c4e1c9;flex:1;min-height:280px;margin:20px 0}
+    .plan-foot {display:flex;align-items:center;gap:10px;flex-wrap:wrap}.plan-foot span {color:#aeb6bf;font-size:11px}
+    .decision {background:var(--night);color:white}
+    .decision .section-kicker {color:#c1aeff}.decision .section-sub {color:#b0b6ba}
+    .decision-grid {display:grid;grid-template-columns:1.1fr .9fr;gap:24px}
+    .decision-questions {border:1px solid #414951;background:#2a323b;border-radius:21px;padding:30px}
+    .qblock {padding:0 0 23px;margin-bottom:23px;border-bottom:1px solid #414a53}.qblock:last-of-type {margin-bottom:0;padding-bottom:0;border:0}
+    .qhead {display:flex;align-items:center;gap:11px;margin-bottom:12px}.qhead b {font-size:14px}.qhead span {font-weight:800;font-size:10px;color:#a39ae8;border:1px solid #695eab;border-radius:50%;width:23px;height:23px;display:grid;place-items:center}
+    .answers {display:flex;gap:8px;flex-wrap:wrap}
+    .answers button {border:1px solid #59616a;color:#bfc6cd;background:transparent;border-radius:9px;padding:10px 14px;font-size:12px;font-weight:800}
+    .answers button[aria-pressed="true"] {color:#262338;background:#d1c5ff;border-color:#d1c5ff}
+    .verdict {background:#e3f4dd;color:#224c36;border-radius:21px;padding:31px;display:flex;flex-direction:column;justify-content:space-between;min-height:360px}
+    .verdict.orange {background:#ffead2;color:#724c25}.verdict.red {background:#ffe1dc;color:#7e3c39}
+    .verdict-top {display:flex;align-items:center;justify-content:space-between;font-size:11px;font-weight:900;letter-spacing:.1em;text-transform:uppercase}
+    .signal {width:10px;height:10px;background:currentColor;border-radius:50%;box-shadow:0 0 0 7px #ffffff55}
+    .verdict-icon {font-size:64px;line-height:1;margin:23px 0 15px}
+    .verdict h3 {font-size:37px;line-height:1.08;letter-spacing:-.07em;margin-bottom:14px}
+    .verdict p {font-size:14px;line-height:1.75;max-width:370px;margin-bottom:20px}
+    .verdict small {opacity:.76;font-size:11px;line-height:1.5}
+    .review {display:grid;grid-template-columns:.88fr 1.12fr;gap:35px;align-items:center}
+    .review-left p {font-size:15px;color:var(--muted);line-height:1.75;margin:25px 0}
+    .rule-box {background:#ede7ff;border-left:4px solid #8063e9;padding:21px;border-radius:0 13px 13px 0;font-size:17px;line-height:1.5;letter-spacing:-.02em;font-weight:750}
+    .checklist {border:1px solid #d9dbd3;background:var(--white);border-radius:21px;overflow:hidden}
+    .check-head {padding:23px 25px;border-bottom:1px solid #e0e1da;display:flex;align-items:center;justify-content:space-between;gap:12px}
+    .check-head h3 {font-size:17px;margin:0;letter-spacing:-.025em}.check-head span {font-size:12px;font-weight:800;color:var(--violet)}
+    .progress {background:#e7e8e2;height:5px}.progress div {height:100%;width:0;background:#7656e5;transition:width .2s}
+    .check {display:flex;gap:14px;padding:18px 25px;border-bottom:1px solid #e9e9e4;cursor:pointer;align-items:flex-start}
+    .check:last-of-type {border-bottom:0}.check input {appearance:none;flex:0 0 19px;height:19px;border:1.8px solid #b5bab5;border-radius:6px;margin:1px 0 0;display:grid;place-items:center;cursor:pointer}.check input:checked {background:var(--violet);border-color:var(--violet)}.check input:checked::after {content:'✓';font-size:13px;color:white;font-weight:bold}
+    .check b {display:block;font-size:13px;margin-bottom:3px}.check small {font-size:12px;color:#8b908c;line-height:1.5}
+    .check-footer {background:#f0f1eb;padding:17px 25px;font-size:12px;color:#686e6a;line-height:1.5}
+    .bottom-cta {margin:12px auto 80px;background:#efe9ff;border:1px solid #ded3ff;border-radius:24px;padding:44px 50px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .bottom-cta h2 {font-size:34px;margin:10px 0 10px}.bottom-cta p {font-size:14px;color:#6a6680;margin:0}
+    footer {border-top:1px solid #dcdad4;padding:25px 0;color:#868a86}
+    .footer-inner {display:flex;align-items:center;justify-content:space-between;font-size:12px;gap:15px}
+    .float-top {position:fixed;bottom:24px;right:24px;z-index:30;width:48px;height:48px;border:0;border-radius:15px;background:var(--violet);color:white;box-shadow:0 12px 30px #5d46d540;display:grid;place-items:center;transition:opacity .2s,transform .2s;opacity:0;pointer-events:none;transform:translateY(10px)}
+    .float-top.show {opacity:1;pointer-events:auto;transform:translateY(0)}
+    .toast {position:fixed;bottom:84px;right:24px;z-index:45;border-radius:12px;background:#242b33;color:#fff;box-shadow:var(--shadow);padding:13px 18px;font-size:12px;font-weight:800;opacity:0;transform:translateY(8px);pointer-events:none;transition:.2s}.toast.show {opacity:1;transform:translateY(0)}
+    svg {display:block}
+    @media(max-width:1050px) {
+      .hero-grid {gap:30px}.flow-grid {grid-template-columns:repeat(3,minmax(0,1fr))}.flow-card {min-height:215px}.detail-tag {display:none}
+      .nav {gap:13px}.nav a {font-size:11px}
+    }
+    @media(max-width:760px) {
+      .wrap {padding:0 19px}.topbar-inner {min-height:62px}.nav {display:none}.top-cta {margin-left:auto;font-size:11px;padding:10px}
+      .hero {padding:54px 0 59px}.hero-grid {grid-template-columns:1fr;gap:42px}h1 {font-size:clamp(45px,10vw,68px)}.hero-desc {font-size:15px}.hero-board {max-width:520px;margin:auto;width:calc(100% - 16px)}
+      .stat-strip {gap:0}.stat {padding:2px 9px;gap:7px;flex-direction:column;align-items:flex-start}.stat b {font-size:27px}.stat span {font-size:10px}
+      .section {padding:68px 0}.section-head {display:block;margin-bottom:27px}.section-sub {margin-top:15px}
+      .flow-grid {grid-template-columns:repeat(2,minmax(0,1fr))}.flow-card {min-height:200px;padding:18px}.flow-icon {margin:14px 0 21px}
+      .flow-detail {grid-template-columns:55px 1fr;padding:20px;gap:13px}.step-counter {width:50px;height:50px;font-size:21px}.flow-detail h3 {font-size:18px}.flow-detail p {font-size:12px}
+      .system-cards,.arch-grid,.planner-grid,.decision-grid,.review {grid-template-columns:1fr}.system-card {min-height:auto}.sys-top {margin-bottom:19px}.system-card p {max-width:none}
+      .panel,.plan-out,.decision-questions,.verdict {padding:24px}.plan-out {min-height:390px}.review {gap:25px}.bottom-cta {padding:30px;display:block}.bottom-cta .button {margin-top:22px}
+    }
+    @media(max-width:440px) {
+      .brand {font-size:13px}.brand-icon {width:29px;height:29px}.top-cta {font-size:10px}.flow-grid {gap:8px}.flow-card {padding:16px 13px;min-height:213px}.flow-card h3 {font-size:15px}.flow-card p {font-size:11px}
+      .dual {grid-template-columns:1fr}.flow-detail {grid-template-columns:1fr}.step-counter {display:none}.stat b {font-size:23px}.stat span {font-size:9px}
+    }
+    @media(prefers-reduced-motion:reduce) {html {scroll-behavior:auto}*,*::before,*::after {transition:none!important;animation:none!important}}
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="brand" href="#inicio" aria-label="Início do guia">
+        <span class="brand-icon"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round"><path d="M5 7h14M5 12h10M5 17h14"/><path d="m17 10 3 2-3 2"/></svg></span>
+        PROJETO / ORDEM
+      </a>
+      <nav class="nav" aria-label="Seções">
+        <a href="#metodo">O método</a><a href="#estrutura">Pastas WSL</a><a href="#planejador">Planejador</a><a href="#decisao">Validação</a>
+      </nav>
+      <a class="top-cta" href="../index.html" title="Voltar ao catálogo Pages">↗ Voltar ao Pages</a>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="wrap hero-grid">
+        <div>
+          <span class="eyebrow"><span class="dot"></span> Guia interativo · versão 1.0</span>
+          <h1>Ideias soltas.<br><span class="under">Projetos com<br>propósito.</span></h1>
+          <p class="hero-desc">Chega de criar <strong>“teste-final-2”</strong> numa pasta aleatória, gastar horas e tokens e depois nem saber se funcionou. Um sistema simples para pensar, construir, testar e decidir.</p>
+          <div class="action-row">
+            <a class="button primary" href="#metodo">Entender o método <span aria-hidden="true">↘</span></a>
+            <a class="button secondary" href="#planejador">Criar uma ideia <span aria-hidden="true">＋</span></a>
+          </div>
+          <p class="helper">Sem instalação. Sem conta. Todos os exemplos são demonstrativos.</p>
+        </div>
+        <div class="hero-board" aria-label="Exemplo visual do fluxo de organização">
+          <div class="board-top"><div class="dots"><i></i><i></i><i></i></div><span>~/dev / painel de projetos</span><span>↗</span></div>
+          <div class="board-label">PROTOCOLO DE CRIAÇÃO <span>5 ETAPAS</span></div>
+          <div class="mini-step"><span class="n">01</span><div><b>Registrar ideia</b><small>Qual problema resolve?</small></div><em>PRONTO</em></div>
+          <div class="mini-step"><span class="n">02</span><div><b>Checar alternativas</b><small>Já existe algo similar?</small></div><em>PRONTO</em></div>
+          <div class="mini-step"><span class="n">03</span><div><b>Protótipo mínimo</b><small>60–90 min · escopo fechado</small></div><em>AGORA</em></div>
+          <div class="mini-step"><span class="n">04</span><div><b>Validar de verdade</b><small>Teste reproduzível</small></div><em>DEPOIS</em></div>
+          <div class="mini-step"><span class="n">05</span><div><b>Decidir destino</b><small>Continuar ou arquivar?</small></div><em>DEPOIS</em></div>
+          <div class="board-foot"><span>●</span> Cada passo deixa um registro. <strong>Nada se perde.</strong></div>
+        </div>
+      </div>
+    </section>
+
+    <div class="wrap"><div class="stat-strip" aria-label="Três princípios">
+      <div class="stat"><b>01</b><span>Um lugar para encontrar seus projetos</span></div>
+      <div class="stat"><b>01</b><span>Critério de sucesso antes do código</span></div>
+      <div class="stat"><b>01</b><span>Decisão honesta ao terminar</span></div>
+    </div></div>
+
+    <section class="section" id="metodo">
+      <div class="wrap">
+        <div class="section-head"><div><div class="caps section-kicker">01 / O método</div><h2>Todo projeto passa<br>por cinco portas.</h2></div><p class="section-sub">Clique numa etapa para entender o que fazer. Não é burocracia: são perguntas rápidas para evitar semanas de retrabalho.</p></div>
+        <div class="flow-grid" id="steps">
+          <button type="button" class="flow-card active" data-step="0" aria-pressed="true"><span class="flow-num">PASSO 01</span><span class="flow-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M7 3h8l4 4v14H5V3h2Z"/><path d="M15 3v5h4M8 12h8M8 16h6"/></svg></span><h3>Registrar</h3><p>Uma frase explicando o problema que você quer resolver.</p></button>
+          <button type="button" class="flow-card" data-step="1" aria-pressed="false"><span class="flow-num">PASSO 02</span><span class="flow-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="10.8" cy="10.8" r="6.6"/><path d="m16 16 5 5M8 11h6"/></svg></span><h3>Pesquisar</h3><p>Já existe um repositório ou ferramenta que faz isso?</p></button>
+          <button type="button" class="flow-card" data-step="2" aria-pressed="false"><span class="flow-num">PASSO 03</span><span class="flow-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="m8 8-4 4 4 4m8-8 4 4-4 4M14 5l-4 14"/></svg></span><h3>Experimentar</h3><p>Fazer a menor versão possível, com limite definido.</p></button>
+          <button type="button" class="flow-card" data-step="3" aria-pressed="false"><span class="flow-num">PASSO 04</span><span class="flow-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="12" cy="12" r="9"/><path d="m7.5 12 3 3 6-6"/></svg></span><h3>Validar</h3><p>Executar um teste e guardar o resultado, bom ou ruim.</p></button>
+          <button type="button" class="flow-card" data-step="4" aria-pressed="false"><span class="flow-num">PASSO 05</span><span class="flow-icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><path d="M12 3v7m0 4v7M3 12h7m4 0h7"/><circle cx="12" cy="12" r="3"/></svg></span><h3>Decidir</h3><p>Continuar, pausar, arquivar ou descartar com motivo.</p></button>
+        </div>
+        <div class="flow-detail" aria-live="polite"><div class="step-counter" id="stepNumber">01</div><div><h3 id="stepTitle">Primeiro a pergunta, depois a pasta.</h3><p id="stepText">Uma ideia sem problema claro vai para a lista de ideias. Ela ainda não precisa de um repositório, dependências ou ambiente virtual.</p></div><span class="detail-tag" id="stepTag">ENTREGA: 1 FRASE</span></div>
+      </div>
+    </section>
+
+    <section class="section architecture" id="estrutura">
+      <div class="wrap">
+        <div class="section-head"><div><div class="caps section-kicker">02 / Onde tudo mora</div><h2>Windows limpo.<br>Linux organizado.</h2></div><p class="section-sub">O WSL2 concentra ferramentas, ambientes e repositórios. O GitHub guarda as versões enviadas. Cada coisa com seu lugar.</p></div>
+        <div class="system-cards">
+          <article class="system-card"><div class="sys-top"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 4.5 10.7 3v8.2H2V4.5Zm10.2-1.7L22 1.5v9.7h-9.8V2.8ZM2 12.7h8.7V21L2 19.6v-6.9Zm10.2 0H22v9.8l-9.8-1.4v-8.4Z"/></svg><span class="sys-id">SISTEMA 01</span></div><h3>Windows</h3><p>Jogos, aplicativos do dia a dia e VS Code como editor visual.</p><span class="sys-chip">Uso pessoal</span></article>
+          <article class="system-card"><div class="sys-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="m7 9 3 3-3 3m6 0h4"/></svg><span class="sys-id">SISTEMA 02</span></div><h3>WSL2 / Ubuntu</h3><p>Pastas dos projetos, Git, Python, Node, venvs, bibliotecas e caches — sob controle.</p><span class="sys-chip">Desenvolvimento local</span></article>
+          <article class="system-card"><div class="sys-top"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M8 14v-4m4 7V7m4 7v-4"/></svg><span class="sys-id">SISTEMA 03</span></div><h3>GitHub</h3><p>Código versionado, README, testes e histórico. Sincroniza quando você faz commit e push.</p><span class="sys-chip">Remoto / privado ou público</span></article>
+        </div>
+        <div class="arch-grid">
+          <div class="terminal">
+            <div class="terminal-head"><span>▣ ESTRUTURA DO WSL</span><span>~/dev/</span></div>
+            <div class="terminal-body">
+              <div class="tree-line"><span class="dir-mark">▾</span><b>dev/</b></div>
+              <div class="tree-indent">
+                <div class="tree-line" data-folder="ideias" tabindex="0" role="button"><span class="dir-mark">▸</span><b>_controle/</b></div>
+                <div class="tree-line" data-folder="lab" tabindex="0" role="button"><span class="dir-mark">▸</span><b>laboratorio/</b></div>
+                <div class="tree-line sel" data-folder="ativos" tabindex="0" role="button"><span class="dir-mark">▸</span><b>ativos/</b></div>
+                <div class="tree-line" data-folder="externos" tabindex="0" role="button"><span class="dir-mark">▸</span><b>externos/</b></div>
+                <div class="tree-line" data-folder="arquivados" tabindex="0" role="button"><span class="dir-mark">▸</span><b>arquivados/</b></div>
+              </div>
+              <div style="margin-top:21px;color:#788c9b;font-size:11px">$ <span style="color:#a7e1b8">code .</span> <span style="color:#8c9aa5"># editor conectado ao WSL</span></div>
+            </div>
+          </div>
+          <div class="folder-inspect" aria-live="polite"><div class="folder-mark" id="folderEmoji">⚡</div><div class="caps section-kicker">CLIQUE NAS PASTAS AO LADO</div><h3 id="folderTitle">ativos/</h3><p id="folderDesc">Projetos que provaram utilidade. Aqui o trabalho evolui com tarefas concretas, testes e histórico no GitHub.</p><div class="note"><strong>Importante:</strong><span id="folderHint">Um projeto só sai do laboratório depois de passar por um teste com resultado registrado.</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="planejador">
+      <div class="wrap">
+        <div class="section-head"><div><div class="caps section-kicker">03 / Antes de codar</div><h2>Monte o contrato<br>de uma ideia.</h2></div><p class="section-sub">Preencha quatro campos. O resultado vira um esqueleto de README para não começar um projeto às cegas.</p></div>
+        <div class="planner-grid">
+          <form class="panel" id="projectForm">
+            <h3>Planejador rápido</h3><p class="panel-lead">Exemplo preenchido. Troque os valores pela sua próxima ideia.</p>
+            <div class="field"><label for="projectName">NOME CURTO DO PROJETO</label><input id="projectName" maxlength="65" value="voz-tts-local" required></div>
+            <div class="field"><label for="projectProblem">QUAL PROBLEMA RESOLVE?</label><textarea id="projectProblem" required>Descobrir se consigo gerar voz local no meu PC com qualidade e latência aceitáveis.</textarea></div>
+            <div class="field"><label for="projectTest">QUAL TESTE COMPROVA QUE FUNCIONA?</label><textarea id="projectTest" required>Gerar um áudio de 10 segundos, medir o tempo e ouvir o resultado.</textarea></div>
+            <div class="dual"><div class="field"><label for="projectTime">LIMITE INICIAL</label><select id="projectTime"><option value="30 minutos">30 minutos</option><option value="60 minutos">60 minutos</option><option value="90 minutos" selected>90 minutos</option><option value="120 minutos">120 minutos</option></select></div><div class="field"><label for="projectStatus">STATUS INICIAL</label><select id="projectStatus"><option value="EXPERIMENTO" selected>Experimento</option><option value="IDEIA">Ideia</option></select></div></div>
+            <button type="submit" class="button primary" style="width:100%">Gerar plano do projeto →</button>
+          </form>
+          <div class="plan-out"><span class="pill">README.md / PRÉVIA</span><h3 style="margin-top:19px">O que fica registrado</h3><p class="panel-lead">Uma referência simples para você e para qualquer IA que trabalhe nesse projeto depois.</p><pre class="readme" id="readmeOutput" aria-live="polite"></pre><div class="plan-foot"><button type="button" class="button secondary" id="copyReadme">Copiar README ⧉</button><span>O conteúdo é gerado no navegador.</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section decision" id="decisao">
+      <div class="wrap">
+        <div class="section-head"><div><div class="caps section-kicker">04 / Evitar desperdício</div><h2>Continuo ou<br>paro por aqui?</h2></div><p class="section-sub">Um experimento não precisa virar produto. Responda às perguntas e veja uma orientação transparente — não uma nota de IA.</p></div>
+        <div class="decision-grid">
+          <div class="decision-questions">
+            <div class="qblock" data-question="works"><div class="qhead"><span>1</span><b>O resultado mínimo funciona?</b></div><div class="answers"><button type="button" data-value="yes" aria-pressed="true">Sim</button><button type="button" data-value="partial" aria-pressed="false">Parcialmente</button><button type="button" data-value="no" aria-pressed="false">Não</button></div></div>
+            <div class="qblock" data-question="useful"><div class="qhead"><span>2</span><b>Ele resolve um problema real?</b></div><div class="answers"><button type="button" data-value="yes" aria-pressed="true">Sim</button><button type="button" data-value="maybe" aria-pressed="false">Ainda não sei</button><button type="button" data-value="no" aria-pressed="false">Não</button></div></div>
+            <div class="qblock" data-question="budget"><div class="qhead"><span>3</span><b>O limite de tempo ou tentativas estourou?</b></div><div class="answers"><button type="button" data-value="no" aria-pressed="true">Não</button><button type="button" data-value="yes" aria-pressed="false">Sim</button></div></div>
+          </div>
+          <div class="verdict" id="verdictBox" aria-live="polite"><div class="verdict-top"><span>RECOMENDAÇÃO</span><span class="signal"></span></div><div><div class="verdict-icon" id="verdictIcon">↗</div><h3 id="verdictTitle">Vale continuar.</h3><p id="verdictText">O mínimo funciona, existe utilidade e você está dentro do limite. Documente o teste e transforme o protótipo em projeto ativo.</p></div><small>Regra prática para orientar uma decisão humana. O contexto pode justificar exceções.</small></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="fechamento">
+      <div class="wrap review">
+        <div class="review-left"><div class="caps section-kicker">05 / Fechamento obrigatório</div><h2>Nenhum projeto<br>sem conclusão.</h2><p>Não importa se deu certo ou errado. Antes de fechar o editor, registre o que realmente aconteceu. Assim a próxima sessão começa do ponto certo.</p><div class="rule-box">“Projeto sem teste é uma aposta. Projeto sem conclusão é uma pasta esquecida.”</div></div>
+        <div class="checklist"><div class="check-head"><h3>Checklist de fim de sessão</h3><span id="progressLabel">0 / 5</span></div><div class="progress"><div id="progressBar"></div></div>
+          <label class="check"><input type="checkbox"><span><b>1. Rodei um teste real?</b><small>Qual foi o comando, log ou demonstração?</small></span></label>
+          <label class="check"><input type="checkbox"><span><b>2. Resolve o problema original?</b><small>Sim, parcialmente ou não — sem disfarçar.</small></span></label>
+          <label class="check"><input type="checkbox"><span><b>3. Quanto custou?</b><small>Tempo gasto, tentativas e tokens, se disponíveis.</small></span></label>
+          <label class="check"><input type="checkbox"><span><b>4. O código foi documentado e salvo?</b><small>README, Git, commit e push quando fizer sentido.</small></span></label>
+          <label class="check"><input type="checkbox"><span><b>5. Tomei uma decisão?</b><small>Continuar, pausar, arquivar ou descartar — e por quê.</small></span></label>
+          <div class="check-footer" id="progressMessage">Marque o que você já verificou. A checklist não envia nem salva informações.</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="wrap"><div class="bottom-cta"><div><div class="caps section-kicker">PRIMEIRO TESTE</div><h2>Comece com uma ideia só.</h2><p>Não reorganize todos os projetos antigos de uma vez. Valide este método primeiro.</p></div><a class="button dark" href="#planejador">Montar meu primeiro plano ↗</a></div></div>
+  </main>
+
+  <footer><div class="wrap footer-inner"><span>PROJETO / ORDEM · Guia de organização v1.0</span><span>WSL2 ↔ GitHub · <a href="../index.html" style="color:#6747e5;font-weight:800">Voltar ao Pages</a></span></div></footer>
+  <button type="button" class="float-top" id="backToTop" aria-label="Voltar ao topo" title="Voltar ao topo (ESC)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m5 14 7-7 7 7"/></svg></button>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    (() => {
+      'use strict';
+      const $ = (s, root = document) => root.querySelector(s);
+      const $$ = (s, root = document) => Array.from(root.querySelectorAll(s));
+
+      const stages = [
+        {title:'Primeiro a pergunta, depois a pasta.', text:'Uma ideia sem problema claro vai para a lista de ideias. Ela ainda não precisa de um repositório, dependências ou ambiente virtual.', tag:'ENTREGA: 1 FRASE'},
+        {title:'Evite reinventar o que já existe.', text:'Procure uma biblioteca, um projeto similar ou uma solução mais simples. Anote a fonte e decida se vai adaptar, construir ou cancelar.', tag:'ENTREGA: LINKS + HIPÓTESE'},
+        {title:'Teste só o que prova a ideia.', text:'Defina o menor resultado observável, um limite inicial de 60–90 minutos e até três tentativas no mesmo bloqueio antes de revisar a abordagem.', tag:'ENTREGA: PROTÓTIPO'},
+        {title:'"Parece bom" não é validação.', text:'Rode o projeto de verdade. Registre o comando, log, resultado e limitações. Se falhou, a conclusão negativa também é aprendizado.', tag:'ENTREGA: EVIDÊNCIA'},
+        {title:'O fim também faz parte do trabalho.', text:'Continue se houve valor. Pause se faltar informação. Arquive se a hipótese falhou ou o custo deixou de compensar. Anote o motivo.', tag:'ENTREGA: DECISÃO'}
+      ];
+      $$('.flow-card').forEach(button => button.addEventListener('click', () => {
+        const i = Number(button.dataset.step);
+        $$('.flow-card').forEach(b => {b.classList.toggle('active', b === button);b.setAttribute('aria-pressed', String(b === button));});
+        $('#stepNumber').textContent = String(i + 1).padStart(2, '0');
+        $('#stepTitle').textContent = stages[i].title;
+        $('#stepText').textContent = stages[i].text;
+        $('#stepTag').textContent = stages[i].tag;
+      }));
+
+      const folders = {
+        ideias:{emoji:'🗒️', title:'_controle/',desc:'Índice geral, ideias ainda não iniciadas e modelos. Evita criar pastas desnecessárias antes da triagem.',hint:'O índice aponta para a localização e status de cada projeto.'},
+        lab:{emoji:'🧪',title:'laboratorio/',desc:'Experimentos com começo e fim. Aqui entram protótipos com um critério de teste e orçamento de esforço.',hint:'Se o teste não compensar, registre o que aprendeu e arquive.'},
+        ativos:{emoji:'⚡',title:'ativos/',desc:'Projetos que provaram utilidade. Aqui o trabalho evolui com tarefas concretas, testes e histórico no GitHub.',hint:'Um projeto só sai do laboratório depois de passar por um teste com resultado registrado.'},
+        externos:{emoji:'🔎',title:'externos/',desc:'Repositórios de terceiros clonados para ler, estudar ou experimentar sem confundir com seus projetos próprios.',hint:'Inspecione README e scripts antes de executar código desconhecido.'},
+        arquivados:{emoji:'📦',title:'arquivados/',desc:'Trabalhos concluídos ou interrompidos, com uma nota curta explicando a decisão e como retomar.',hint:'Arquivar não é fracassar: preserva aprendizado e evita gastar tokens duas vezes.'}
+      };
+      function selectFolder(el){
+        $$('.tree-line[data-folder]').forEach(item => item.classList.toggle('sel',item===el));
+        const f=folders[el.dataset.folder];
+        $('#folderEmoji').textContent=f.emoji;$('#folderTitle').textContent=f.title;$('#folderDesc').textContent=f.desc;$('#folderHint').textContent=f.hint;
+      }
+      $$('.tree-line[data-folder]').forEach(el=>{el.addEventListener('click',()=>selectFolder(el));el.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();selectFolder(el);}});});
+
+      let currentReadme = '';
+      function slugify(value) {return String(value).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,60)||'projeto-sem-nome';}
+      function buildReadme() {
+        const rawName=$('#projectName').value.trim()||'Minha ideia';
+        const slug=slugify(rawName);
+        const problem=$('#projectProblem').value.trim()||'[descreva o problema]';
+        const test=$('#projectTest').value.trim()||'[defina um teste reproduzível]';
+        const status=$('#projectStatus').value;
+        const time=$('#projectTime').value;
+        currentReadme = `# ${rawName}\n\nStatus: ${status}\nPasta sugerida: ~/dev/${status==='IDEIA'?'_controle/ideias.md':'laboratorio/'+slug+'/'}\n\n## Problema\n${problem}\n\n## Teste de sucesso\n${test}\n\n## Limite inicial\n${time}; rever após 3 tentativas no mesmo erro.\n\n## O que NÃO fazer agora\n[escreva os itens fora do escopo]\n\n## Validação final\n- Funcionou? [ ]\n- Tempo e tokens: [ ]\n- Decisão e motivo: [ ]\n\n## GitHub\n[URL do repositório quando criado]`;
+        $('#readmeOutput').textContent=currentReadme;
+      }
+      $('#projectForm').addEventListener('submit',e=>{e.preventDefault();buildReadme();notify('Plano atualizado!');});
+      ['projectName','projectProblem','projectTest','projectTime','projectStatus'].forEach(id=>$('#'+id).addEventListener('input',buildReadme));
+      buildReadme();
+      let toastTimer;
+      function notify(message){const el=$('#toast');el.textContent=message;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),2600);}
+      $('#copyReadme').addEventListener('click',async()=>{
+        try {await navigator.clipboard.writeText(currentReadme);notify('README copiado!');}
+        catch {const textarea=document.createElement('textarea');textarea.value=currentReadme;textarea.style.position='fixed';textarea.style.opacity='0';document.body.appendChild(textarea);textarea.select();const ok=document.execCommand('copy');textarea.remove();notify(ok?'README copiado!':'Selecione e copie o texto do modelo.');}
+      });
+
+      const answers={works:'yes',useful:'yes',budget:'no'};
+      function updateVerdict(){
+        let state;
+        if(answers.useful==='no') state={kind:'red',icon:'↘',title:'Arquive a ideia.',text:'Se não resolve um problema real, continuar gastando tempo não faz sentido. Anote o aprendizado e encerre com tranquilidade.'};
+        else if(answers.budget==='yes' || answers.works==='no') state={kind:'orange',icon:'Ⅱ',title:'Pause e revise.',text:'O teste não funcionou ou o limite foi atingido. Documente o bloqueio, procure uma alternativa e só então decida por uma nova rodada.'};
+        else if(answers.works==='partial'||answers.useful==='maybe') state={kind:'orange',icon:'?',title:'Valide mais uma hipótese.',text:'Ainda falta evidência. Escolha um teste pequeno e objetivo; não amplie o projeto antes de responder à dúvida central.'};
+        else state={kind:'green',icon:'↗',title:'Vale continuar.',text:'O mínimo funciona, existe utilidade e você está dentro do limite. Documente o teste e transforme o protótipo em projeto ativo.'};
+        const box=$('#verdictBox');box.className='verdict'+(state.kind==='green'?'':' '+state.kind);
+        $('#verdictIcon').textContent=state.icon;$('#verdictTitle').textContent=state.title;$('#verdictText').textContent=state.text;
+      }
+      $$('.qblock').forEach(block=>{$$('button',block).forEach(btn=>btn.addEventListener('click',()=>{
+        answers[block.dataset.question]=btn.dataset.value;
+        $$('button',block).forEach(b=>b.setAttribute('aria-pressed',String(b===btn)));
+        updateVerdict();
+      }));});
+      updateVerdict();
+
+      const checklist=$$('.check input');
+      checklist.forEach(c=>c.addEventListener('change',()=>{
+        const n=checklist.filter(x=>x.checked).length;
+        $('#progressLabel').textContent=`${n} / ${checklist.length}`;
+        $('#progressBar').style.width=`${n/checklist.length*100}%`;
+        $('#progressMessage').textContent=n===checklist.length?'Tudo conferido. Agora registre a decisão no README antes de encerrar.':'Marque o que você já verificou. A checklist não envia nem salva informações.';
+      }));
+      const topBtn=$('#backToTop');
+      function refreshTop(){topBtn.classList.toggle('show',window.scrollY>420);}
+      window.addEventListener('scroll',refreshTop,{passive:true});refreshTop();
+      topBtn.addEventListener('click',()=>window.scrollTo({top:0,behavior:'smooth'}));
+      document.addEventListener('keydown',e=>{if(e.key==='Escape' && !['INPUT','TEXTAREA','SELECT'].includes(document.activeElement?.tagName)){window.scrollTo({top:0,behavior:'smooth'});}});
+    })();
+  </script>
+</body>
+</html>
