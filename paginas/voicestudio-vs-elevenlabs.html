@@ -1,0 +1,382 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#10141e">
+  <meta name="description" content="Dossiê visual e interativo: VoiceStudio contra ElevenLabs, clonagem vocal, emoções, benchmarks em português e execução no Ryzen 5 5600 com RX 7600.">
+  <title>VoiceStudio × ElevenLabs — Laboratório de voz</title>
+  <style>
+    :root{--bg:#10141e;--bg2:#151b29;--card:#1a2231;--card2:#20293a;--line:#354052;--soft:#9da9b9;--white:#f6f3e9;--lime:#caf279;--coral:#ff8d75;--blue:#96bffc;--ink:#10141e;--max:1160px}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth;scroll-padding-top:104px}
+    body{margin:0;background:var(--bg);color:var(--white);font:16px/1.55 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+    body:before{content:"";position:fixed;z-index:-1;inset:0;pointer-events:none;background:radial-gradient(circle at 82% 7%,#38526e48,transparent 30%),radial-gradient(circle at 10% 55%,#2e514630,transparent 27%)}
+    a{color:inherit}button{font:inherit}button:focus-visible,a:focus-visible{outline:3px solid var(--lime);outline-offset:3px}
+    .wrap{width:min(var(--max),calc(100% - 40px));margin:auto}
+    .micro{font:700 11px/1.3 ui-monospace,SFMono-Regular,Consolas,monospace;letter-spacing:.16em;text-transform:uppercase}
+    .muted{color:var(--soft)}
+    .muted-small{color:var(--soft);font-size:13px}
+    .pill{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid var(--line);border-radius:50px;color:var(--soft);font-size:12px;font-weight:650}
+    .pill .dot{width:7px;height:7px;border-radius:50%;background:var(--lime);box-shadow:0 0 10px #caf27980}
+    .top{position:sticky;top:0;z-index:40;background:#10141eea;backdrop-filter:blur(22px);border-bottom:1px solid #ffffff18}
+    .top .wrap{min-height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+    .identity{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:800;letter-spacing:-.04em;white-space:nowrap}
+    .identity i{width:35px;height:35px;border-radius:10px;background:var(--lime);display:grid;place-items:center;color:var(--ink);font-size:21px;font-style:normal;line-height:1}
+    .identity small{display:block;color:var(--soft);font-size:9px;letter-spacing:.13em;line-height:1.6;text-transform:uppercase}
+    .top nav{display:flex;gap:21px;align-items:center}
+    .top nav a{color:var(--soft);font-size:12px;font-weight:750;text-decoration:none;white-space:nowrap;transition:color .2s}
+    .top nav a:hover{color:var(--lime)}
+    .top .toplink{display:inline-flex;align-items:center;gap:6px;padding:9px 13px;border:1px solid var(--line);border-radius:10px;text-decoration:none;font-size:12px;font-weight:800}
+    .toplink:hover{border-color:var(--lime)}
+    .hero{display:grid;grid-template-columns:minmax(0,1.04fr) minmax(0,.96fr);align-items:center;gap:34px;padding:81px 0 62px}
+    .eyebrow{color:var(--lime);margin:0 0 20px}
+    h1,h2,h3,p{margin-top:0}
+    h1{font-size:clamp(56px,7vw,105px);line-height:.97;letter-spacing:-.075em;margin:0 0 27px;font-weight:850}
+    h1 em{color:var(--coral);font-style:normal}
+    .lead{font-size:clamp(16px,1.5vw,19px);line-height:1.7;color:#bbc5d2;max-width:530px;margin-bottom:25px}
+    .hero-actions{display:flex;flex-wrap:wrap;gap:11px}
+    .btn{border-radius:12px;padding:14px 18px;font-weight:800;font-size:13px;display:inline-flex;align-items:center;gap:9px;cursor:pointer;text-decoration:none;border:1px solid var(--line);background:transparent;color:var(--white);transition:transform .15s,background .15s}
+    .btn:hover{transform:translateY(-2px)}.btn.primary{background:var(--lime);color:var(--ink);border-color:var(--lime)}
+    .hero-note{font-size:11px;color:#8794a6;margin-top:20px}
+    .voice-art{position:relative;min-height:505px;border:1px solid #63728a65;border-radius:29px;overflow:hidden;background:linear-gradient(142deg,#283649,#141c2a 52%,#242f3d)}
+    .voice-art:before{content:"";position:absolute;inset:0;background-image:linear-gradient(#d0dfef0a 1px,transparent 1px),linear-gradient(90deg,#d0dfef0a 1px,transparent 1px);background-size:29px 29px}
+    .voice-art:after{content:"";position:absolute;width:290px;height:290px;border-radius:50%;left:27%;top:22%;background:#ff8d7530;filter:blur(73px);pointer-events:none}
+    .art-header{position:absolute;left:24px;right:24px;top:22px;display:flex;align-items:center;justify-content:space-between;gap:10px;z-index:3}
+    .art-label{color:var(--white);letter-spacing:.13em}
+    .art-index{color:#a6b3c2;border:1px solid #697588;background:#11182388;border-radius:7px;padding:6px 9px}
+    .voice-art svg{width:100%;height:100%;position:absolute;inset:0;z-index:1}
+    .orbit{transform-origin:50% 50%;animation:orbit 32s linear infinite}
+    .orbit.rev{animation-direction:reverse;animation-duration:45s}
+    @keyframes orbit{to{transform:rotate(360deg)}}
+    .art-footer{position:absolute;left:19px;right:19px;bottom:20px;display:grid;grid-template-columns:repeat(3,1fr);gap:8px;z-index:3}
+    .art-stat{padding:12px 10px;border:1px solid #93a2b159;background:#121a29be;border-radius:12px;backdrop-filter:blur(9px)}
+    .art-stat strong{display:block;font-size:17px;letter-spacing:-.04em}.art-stat span{color:#aab9ca;font-size:10px}
+    .strip{border-block:1px solid var(--line);background:#161d2a;padding:18px 0}
+    .strip .wrap{display:flex;align-items:center;justify-content:space-between;gap:13px;flex-wrap:wrap}
+    .strip strong{color:var(--lime);font-weight:800}.strip span{color:#c3ccd6;font-size:12px}
+    section.content{padding:91px 0 0}
+    .section-top{display:flex;align-items:end;justify-content:space-between;gap:25px;margin-bottom:34px}
+    .section-top p{max-width:415px;color:var(--soft);margin:0;font-size:14px;line-height:1.7}
+    .kicker{color:var(--coral);margin:0 0 14px}
+    h2{font-size:clamp(36px,4.5vw,64px);line-height:1.05;letter-spacing:-.06em;font-weight:840;margin:0}
+    h2 .outline{color:var(--lime)}
+    h3{font-size:21px;letter-spacing:-.03em;line-height:1.25}
+    .three{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:13px}
+    .insight{min-height:259px;border:1px solid var(--line);border-radius:20px;background:var(--card);padding:25px;display:flex;flex-direction:column}
+    .insight:nth-child(2){background:#27313f}.insight:nth-child(3){background:#242c39}
+    .insight .num{color:var(--lime);font-size:12px;letter-spacing:.08em;font-weight:900;margin-bottom:48px}
+    .insight h3{margin-bottom:10px}.insight p{font-size:13px;color:#b1bdca;margin-bottom:0}
+    .path{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+    .path-card{position:relative;border-top:1px solid var(--line);padding:24px 16px 18px 0}
+    .path-card:after{content:'↗';position:absolute;right:8px;top:24px;color:var(--lime);font-size:19px}
+    .path-card:last-child:after{content:'✓'}
+    .path-card .step{font-size:10px;color:var(--coral);margin-bottom:32px}
+    .path-card h3{font-size:19px;margin-bottom:10px}.path-card p{font-size:13px;color:var(--soft)}
+    .benchmark{background:#eae9de;color:#161c27;border-radius:27px;padding:34px;position:relative;overflow:hidden}
+    .benchmark:before{content:"";position:absolute;width:250px;height:250px;background:#d7ebaa;filter:blur(80px);top:-150px;right:-60px;pointer-events:none}
+    .benchmark .micro{color:#67725c}
+    .benchmark h3{font-size:clamp(26px,3.2vw,41px);max-width:600px;letter-spacing:-.06em;margin:12px 0 7px}
+    .benchmark .intro{max-width:650px;color:#5e6770;font-size:13px}
+    .segmented{display:inline-flex;background:#d6d8ce;padding:5px;border-radius:12px;gap:4px;margin:22px 0 33px}
+    .segmented button{background:transparent;color:#53606a;padding:10px 13px;border:0;border-radius:8px;cursor:pointer;font-size:12px;font-weight:850}
+    .segmented button.active{background:#192533;color:#fff;box-shadow:0 3px 9px #14202b20}
+    .metric-title{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:17px}
+    .metric-title b{font-size:13px}.metric-title span{font-size:11px;color:#68727a}
+    .measure{display:grid;grid-template-columns:160px 1fr 82px;align-items:center;gap:15px;margin:16px 0}
+    .measure .who{font-size:13px;font-weight:800}
+    .track{width:100%;height:28px;border-radius:8px;background:#d1d5cd;overflow:hidden;position:relative}
+    .fill{height:100%;width:0;transition:width .5s cubic-bezier(.2,.8,.2,1);border-radius:7px}
+    .fill.omni{background:#b5e576}.fill.eleven{background:#ff987d}
+    .measure strong{font-size:21px;font-weight:870;letter-spacing:-.05em;text-align:right}
+    .reading{display:flex;gap:12px;align-items:start;border-top:1px solid #bbc0b6;padding-top:22px;margin-top:26px}
+    .reading .symbol{font-size:18px;background:#192533;color:#c8e990;width:29px;height:29px;flex:0 0 29px;text-align:center;border-radius:8px}
+    .reading p{font-size:13px;color:#4c5962;margin:0}
+    .source-mini{font-size:11px;color:#6b737b;margin-top:20px}
+    .source-mini a{color:#293b4c;text-underline-offset:3px}
+    .motor-head{display:flex;justify-content:space-between;align-items:end;gap:22px;flex-wrap:wrap;margin-bottom:28px}
+    .filters{display:flex;flex-wrap:wrap;gap:6px}
+    .filters button{border:1px solid var(--line);border-radius:100px;padding:8px 12px;background:transparent;color:#afbccb;font-size:12px;font-weight:750;cursor:pointer}
+    .filters button.active{color:var(--ink);background:var(--lime);border-color:var(--lime)}
+    .motor-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+    .motor{position:relative;background:var(--card);border:1px solid var(--line);border-radius:20px;padding:24px;display:flex;flex-direction:column;min-height:247px}
+    .motor[hidden]{display:none}
+    .motor-featured{border-color:#caf27972;background:linear-gradient(155deg,#26363c,#1d2834)}
+    .motor .cap{display:flex;justify-content:space-between;gap:12px;margin-bottom:23px;align-items:start}
+    .motor .engine-icon{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:#344255;color:var(--lime);font-weight:800;font-size:20px}
+    .flag{font-size:10px;border-radius:50px;padding:6px 9px;background:#324053;color:#cad4df;font-weight:850;text-align:center}
+    .flag.good{background:#c4ef7c;color:#1d2b1a}.flag.warn{background:#513d3b;color:#ffb8a7}
+    .motor h3{font-size:25px;margin-bottom:9px}.motor p{color:#aab9c7;font-size:13px;margin-bottom:18px}
+    .motor .facts{display:flex;flex-wrap:wrap;gap:7px;margin-top:auto}
+    .motor .facts span{border:1px solid #3b4859;border-radius:7px;padding:5px 8px;font-size:10px;color:#c9d4df}
+    .motor .footnote{font-size:11px;color:#8998aa;margin-top:15px}
+    .spec-sheet{display:grid;grid-template-columns:minmax(0,.78fr) minmax(0,1.22fr);gap:14px}
+    .device{border:1px solid var(--line);border-radius:23px;padding:27px;background:linear-gradient(150deg,#242d3a,#161e2b)}
+    .device .micro{color:var(--lime)}
+    .device h3{font-size:30px;margin:14px 0 25px}
+    .device svg{width:100%;max-height:228px;margin:2px 0 24px}
+    .spec-row{padding:10px 0;display:flex;justify-content:space-between;gap:15px;border-top:1px solid var(--line);font-size:12px}
+    .spec-row span{color:var(--soft)}.spec-row strong{text-align:right}
+    .capabilities{border:1px solid var(--line);border-radius:23px;padding:27px;background:var(--card)}
+    .capabilities h3{font-size:29px;margin:10px 0 24px}
+    .ability{padding:18px 0;border-top:1px solid var(--line);display:grid;grid-template-columns:26px 1fr;gap:12px}
+    .ability .mark{height:24px;width:24px;display:grid;place-items:center;border-radius:50%;background:#b8ed791d;color:var(--lime);font-weight:850}
+    .ability.alert .mark{color:var(--coral);background:#ff8d751f}
+    .ability h4{font-size:15px;margin:0 0 5px}.ability p{font-size:12px;color:#aebbc9;margin:0}
+    .notice{border:1px dashed #718078;border-radius:13px;padding:15px 17px;margin-top:22px;background:#1e2d2b;color:#bed2c9;font-size:12px}
+    .lab{background:linear-gradient(130deg,#292d3e,#252e37);border:1px solid #505c70;border-radius:27px;padding:30px;display:grid;grid-template-columns:.82fr 1.18fr;gap:27px;align-items:center}
+    .lab h3{font-size:36px;line-height:1.05;letter-spacing:-.06em;margin:12px 0 16px}
+    .lab p{color:#bac5d2;font-size:13px}
+    .lab .tiny-note{font-size:11px;color:#9caaba}
+    .console{background:#0c121b;border:1px solid #405064;border-radius:17px;overflow:hidden}
+    .console-top{display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:1px solid #2e3c4f;padding:13px 17px;color:#7f94a8;font-size:11px;font-family:ui-monospace,monospace}
+    .lights{display:flex;gap:5px}.lights i{height:7px;width:7px;background:#ff8d75;border-radius:50%}.lights i:nth-child(2){background:#f4d485}.lights i:nth-child(3){background:#bae980}
+    .console-code{padding:25px 19px;white-space:pre-wrap;word-break:break-word;min-height:184px;margin:0;font:14px/1.8 ui-monospace,SFMono-Regular,Consolas,monospace;color:#d7e3f0}
+    .code-label{color:#94b4fa}.code-instruct{color:#d3f68c}.code-normal{color:#e9e6df}
+    .console-actions{padding:0 18px 18px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+    .switches{display:flex;gap:7px;flex-wrap:wrap}.switches button{border:1px solid #425266;background:#1a2636;color:#aebbc9;padding:8px 11px;border-radius:8px;font-size:11px;font-weight:800;cursor:pointer}
+    .switches button.active{background:#d3f68c;color:#172117;border-color:#d3f68c}
+    .copy{border:0;border-radius:9px;padding:9px 11px;background:#41536b;color:#fff;cursor:pointer;font-weight:800;font-size:11px}
+    .vs{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+    .vs-card{border:1px solid var(--line);border-radius:20px;padding:26px;background:#1c2533}
+    .vs-card:nth-child(2){background:#282b36}
+    .vs-card h3{font-size:30px;margin:12px 0 20px}
+    .vs-card li{margin:0 0 12px;color:#beccd7;font-size:13px;padding-left:4px}
+    .vs-card ul{padding-left:20px;margin:0}
+    .vs-card .badge{display:inline-block;color:#15231a;background:var(--lime);border-radius:5px;padding:5px 8px}
+    .vs-card:nth-child(2) .badge{background:var(--coral);color:#321c1c}
+    .end-verdict{display:grid;grid-template-columns:1fr auto;align-items:center;gap:15px;background:var(--lime);color:var(--ink);border-radius:23px;padding:32px;margin-top:23px}
+    .end-verdict h3{font-size:clamp(25px,3vw,38px);margin:9px 0;letter-spacing:-.05em}.end-verdict p{margin:0;font-size:13px;max-width:710px;color:#3f5440}
+    .end-verdict a{border-radius:11px;background:#14221c;color:var(--lime);text-decoration:none;padding:13px 16px;font-size:12px;font-weight:850;white-space:nowrap}
+    .references{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+    .references a{display:flex;justify-content:space-between;gap:10px;align-items:center;background:#1d2633;border:1px solid var(--line);padding:15px 16px;border-radius:10px;font-size:12px;text-decoration:none;color:#cdd7e4}
+    .references a:hover{border-color:var(--lime);color:var(--lime)}
+    .references small{color:#7e90a5}
+    .method{font-size:12px;color:#8d9cae;margin-top:18px;max-width:800px}
+    footer{padding:40px 0;margin-top:85px;border-top:1px solid var(--line)}
+    footer .wrap{display:flex;justify-content:space-between;gap:16px;align-items:center;flex-wrap:wrap;color:#8697a8;font-size:12px}
+    .up{position:fixed;right:21px;bottom:21px;z-index:60;width:47px;height:47px;border:1px solid #8f9cac88;border-radius:14px;background:#202d3b;color:var(--lime);font-weight:900;font-size:21px;cursor:pointer;box-shadow:0 12px 35px #0006;opacity:0;pointer-events:none;transform:translateY(12px);transition:all .2s}
+    .up.show{opacity:1;pointer-events:auto;transform:none}
+    .sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+    @media(max-width:960px){.top nav{gap:11px}.top nav a{font-size:11px}.hero{grid-template-columns:1fr 1fr}.voice-art{min-height:420px}.art-stat strong{font-size:14px}.spec-sheet{grid-template-columns:1fr 1.2fr}}
+    @media(max-width:760px){.wrap{width:calc(100% - 26px)}.top .wrap{min-height:66px}.top nav{display:none}.hero{grid-template-columns:1fr;gap:30px;padding:53px 0 39px}h1{font-size:clamp(56px,12vw,83px)}.voice-art{min-height:400px}.section-top{display:block}.section-top p{margin-top:18px}.three,.path{grid-template-columns:1fr 1fr}.insight{min-height:235px}.motor-grid{grid-template-columns:1fr}.spec-sheet,.lab{grid-template-columns:1fr}.vs{grid-template-columns:1fr}.references{grid-template-columns:1fr}.end-verdict{grid-template-columns:1fr}}
+    @media(max-width:480px){.identity{font-size:13px}.toplink{font-size:11px!important;padding:8px 10px!important}.hero{padding-top:43px}.voice-art{min-height:355px}.art-footer{left:10px;right:10px;bottom:12px}.art-stat{padding:9px 6px}.art-stat strong{font-size:12px}.art-stat span{font-size:9px}.three,.path{grid-template-columns:1fr}.insight{min-height:205px}.insight .num{margin-bottom:29px}section.content{padding-top:68px}.benchmark{padding:21px 16px}.measure{grid-template-columns:86px 1fr 61px;gap:9px}.measure .who{font-size:11px}.measure strong{font-size:16px}.metric-title{align-items:start}.segmented button{padding:8px 9px;font-size:11px}.lab{padding:17px}.lab h3{font-size:31px}.console-code{font-size:12px;padding:18px 13px;min-height:193px}.console-actions{display:block}.copy{margin-top:11px}.end-verdict{padding:24px}}
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation:none!important;transition:none!important}}
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="wrap">
+      <a class="identity" href="../" aria-label="Voltar ao catálogo Pages"><i>≋</i><span>LAB / VOZ<small>SONYDDR666 · PAGES</small></span></a>
+      <nav aria-label="Seções da análise">
+        <a href="#visao">Visão geral</a><a href="#dados">Dados reais</a><a href="#motores">Motores</a><a href="#hardware">Seu PC</a><a href="#fontes">Fontes</a>
+      </nav>
+      <a class="toplink" href="https://github.com/debpalash/VoiceStudio" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap hero">
+      <div>
+        <p class="micro eyebrow">Estudo visual · 24 outubro 2026 · edição 01</p>
+        <h1>VOZ<br>SEM<br><em>FILTRO.</em></h1>
+        <p class="lead">VoiceStudio consegue clonar uma voz como o ElevenLabs? E o que acontece quando a exigência deixa de ser só <strong>parecer</strong> e passa a ser <strong>interpretar</strong>?</p>
+        <div class="hero-actions"><a class="btn primary" href="#dados">Explorar resultados <span aria-hidden="true">↓</span></a><a class="btn" href="#hardware">Analisar meu PC ↗</a></div>
+        <p class="hero-note">Análise técnica ilustrada. Não há áudio gerado nem testes executados neste dispositivo.</p>
+      </div>
+      <div class="voice-art" role="img" aria-label="Ilustração abstrata de camadas e ondas sonoras representando timbre, ritmo e emoção">
+        <div class="art-header"><span class="micro art-label">SINAL / 001</span><span class="micro art-index">LOCAL TTS</span></div>
+        <svg viewBox="0 0 520 510" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs><radialGradient id="glow"><stop stop-color="#ffb7a4" stop-opacity=".3"/><stop offset="1" stop-color="#ffb7a4" stop-opacity="0"/></radialGradient><linearGradient id="wave" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#c8f17c"/><stop offset=".5" stop-color="#a1cfff"/><stop offset="1" stop-color="#ff8d75"/></linearGradient></defs>
+          <circle cx="260" cy="245" r="185" fill="url(#glow)"/>
+          <g class="orbit" fill="none" stroke="#a8b7cf" stroke-opacity=".22"><circle cx="260" cy="243" r="182" stroke-dasharray="2 14"/><ellipse cx="260" cy="243" rx="206" ry="99" transform="rotate(-28 260 243)" stroke-width="1.6"/><ellipse cx="260" cy="243" rx="193" ry="124" transform="rotate(33 260 243)"/></g>
+          <g class="orbit rev" fill="none" stroke="#a6cde2" stroke-opacity=".39"><ellipse cx="260" cy="243" rx="145" ry="190" transform="rotate(32 260 243)"/><circle cx="260" cy="243" r="116" stroke-dasharray="2 9"/></g>
+          <circle cx="260" cy="243" r="82" fill="#172334" stroke="#abbaca" stroke-opacity=".3" stroke-width="1.5"/>
+          <g fill="none" stroke="url(#wave)" stroke-width="4" stroke-linecap="round">
+            <path d="M50 243 C74 243 74 212 97 212 S126 275 149 275 S176 183 196 183 S220 304 244 304 S270 158 294 158 S315 275 339 275 S370 208 392 208 S422 243 470 243" opacity=".89"/>
+            <path d="M50 253 C74 253 74 284 97 284 S126 221 149 221 S176 313 196 313 S220 192 244 192 S270 338 294 338 S315 221 339 221 S370 288 392 288 S422 253 470 253" opacity=".38"/>
+          </g>
+          <circle cx="260" cy="243" r="17" fill="#caf279"/><circle cx="260" cy="243" r="7" fill="#1b2934"/>
+          <g fill="#d0e4e9" font-size="10" font-family="monospace"><text x="79" y="115">AUDIO IN</text><text x="354" y="133">TONE</text><text x="356" y="359">VOICE OUT</text></g>
+          <circle cx="105" cy="125" r="3" fill="#ff8d75"/><circle cx="359" cy="145" r="3" fill="#caf279"/><circle cx="359" cy="344" r="3" fill="#96bffc"/>
+        </svg>
+        <div class="art-footer"><div class="art-stat"><strong>05–15 s</strong><span>referência ideal</span></div><div class="art-stat"><strong>Zero-shot</strong><span>sem treinar do zero</span></div><div class="art-stat"><strong>PT-BR</strong><span>teste de idioma</span></div></div>
+      </div>
+    </div>
+
+    <div class="strip"><div class="wrap"><span><strong>VOICE STUDIO</strong> · código aberto, modelos locais</span><span><strong>ELEVENLABS</strong> · plataforma hospedada</span><span><strong>OBJETIVO</strong> · separar marketing de capacidade real</span></div></div>
+
+    <section class="content wrap" id="visao">
+      <div class="section-top"><div><p class="micro kicker">01 / O essencial</p><h2>Três verdades.<br><span class="outline">Sem exagero.</span></h2></div><p>O VoiceStudio é a interface. A qualidade final depende do motor escolhido, da gravação usada como referência e do hardware disponível.</p></div>
+      <div class="three">
+        <article class="insight"><span class="num">01 — CLONAGEM</span><h3>Sim, ele clona.</h3><p>Uma amostra limpa de poucos segundos pode condicionar o modelo para reproduzir o timbre de uma voz sem treinamento personalizado.</p></article>
+        <article class="insight"><span class="num">02 — EXPRESSÃO</span><h3>Nem todo motor atua.</h3><p>Risadas, suspiros, pausas e interpretação emocional são recursos diferentes. Alguns motores têm comandos de estilo; outros apenas seguem a referência.</p></article>
+        <article class="insight"><span class="num">03 — PERFORMANCE</span><h3>O app é leve. O modelo, não.</h3><p>O executável abre em hardware comum, mas motores com bilhões de parâmetros podem demorar para sintetizar na CPU.</p></article>
+      </div>
+    </section>
+
+    <section class="content wrap" id="processo">
+      <div class="section-top"><div><p class="micro kicker">02 / Anatomia</p><h2>De uma gravação<br>até uma <span class="outline">nova frase.</span></h2></div><p>Zero-shot não é fazer uma cópia permanente do cérebro da voz. É usar uma amostra para orientar a síntese de uma nova fala.</p></div>
+      <div class="path">
+        <div class="path-card"><p class="micro step">PASSO 01 / INPUT</p><h3>Referência</h3><p>Grave 5–15 segundos com fala clara, sem música e com pouca reverberação.</p></div>
+        <div class="path-card"><p class="micro step">PASSO 02 / IDENTIDADE</p><h3>Timbre</h3><p>O modelo extrai características associadas ao locutor: cor vocal, altura e traços da emissão.</p></div>
+        <div class="path-card"><p class="micro step">PASSO 03 / CONTROLE</p><h3>Texto + estilo</h3><p>Texto, pontuação e, nos motores compatíveis, instruções como “tom cansado” guiam a interpretação.</p></div>
+        <div class="path-card"><p class="micro step">PASSO 04 / OUTPUT</p><h3>Áudio novo</h3><p>É sintetizada uma fala inédita. A semelhança e a naturalidade ainda precisam ser avaliadas ouvindo.</p></div>
+      </div>
+    </section>
+
+    <section class="content wrap" id="dados">
+      <div class="section-top"><div><p class="micro kicker">03 / Comparação publicada</p><h2>O que os<br><span class="outline">números dizem?</span></h2></div><p>Um estudo de OmniVoice inclui comparação com ElevenLabs Multilingual v2 em português. Os dois critérios medem coisas diferentes.</p></div>
+      <div class="benchmark">
+        <p class="micro">MiniMax-Multilingual-24 · recorte português</p>
+        <h3>OmniVoice vs ElevenLabs Multilingual v2</h3>
+        <p class="intro">Dados divulgados no artigo científico dos criadores do OmniVoice. Escolha a métrica para compreender o resultado.</p>
+        <div class="segmented" role="group" aria-label="Selecionar métrica"><button type="button" class="active" data-metric="similarity" aria-pressed="true">Semelhança vocal</button><button type="button" data-metric="wer" aria-pressed="false">Erro de palavras</button></div>
+        <div class="metric-title"><b id="metricName">Similaridade com a referência (SIM-o)</b><span id="metricHint">Maior é melhor ↑</span></div>
+        <div class="measure"><span class="who">OmniVoice</span><div class="track" aria-hidden="true"><div class="fill omni" id="omniBar" style="width:85.9%"></div></div><strong id="omniValue">0,859</strong></div>
+        <div class="measure"><span class="who">ElevenLabs v2</span><div class="track" aria-hidden="true"><div class="fill eleven" id="elevenBar" style="width:71.1%"></div></div><strong id="elevenValue">0,711</strong></div>
+        <div class="reading"><span class="symbol">i</span><p id="metricReading">Nesse teste automático, o OmniVoice obteve mais semelhança com a voz original. Isso não garante uma interpretação mais humana ou mais emotiva.</p></div>
+        <p class="source-mini">Fonte: <a href="https://arxiv.org/abs/2604.00688" target="_blank" rel="noopener noreferrer">OmniVoice, artigo técnico (Tabela 3)</a>. A comparação é com o Multilingual v2, não com Eleven v3/v4. Não é uma avaliação auditiva independente.</p>
+      </div>
+    </section>
+
+    <section class="content wrap" id="motores">
+      <div class="motor-head"><div><p class="micro kicker">04 / Escolha de motor</p><h2>O modelo muda<br><span class="outline">tudo.</span></h2></div><div class="filters" role="group" aria-label="Filtros de motores"><button type="button" class="active" data-filter="all" aria-pressed="true">Todos</button><button type="button" data-filter="pt" aria-pressed="false">Português</button><button type="button" data-filter="cpu" aria-pressed="false">CPU Windows</button><button type="button" data-filter="emotion" aria-pressed="false">Emoção dirigida</button></div></div>
+      <div class="motor-grid" id="motorGrid">
+        <article class="motor motor-featured" data-pt="yes" data-cpu="yes" data-emotion="no"><div class="cap"><span class="engine-icon">≋</span><span class="flag good">PADRÃO</span></div><h3>OmniVoice</h3><p>Clonagem zero-shot e enorme cobertura linguística. Ótimo ponto de partida para comparar identidade vocal. A expressão acompanha principalmente a referência; há risada, suspiro e sussurro, mas não controle graduado de alegria/tristeza.</p><div class="facts"><span>Português ✓</span><span>CPU ✓</span><span>Referência: 5–15 s</span></div><div class="footnote">Foco: fidelidade da identidade vocal · 24 kHz</div></article>
+        <article class="motor" data-pt="yes" data-cpu="yes" data-emotion="no"><div class="cap"><span class="engine-icon">⚡</span><span class="flag good">CPU PRIMEIRO</span></div><h3>PocketTTS</h3><p>Modelo compacto de 100 milhões de parâmetros, criado para trabalhar na CPU. Clona voz e suporta português. Uma versão opcional de 24 camadas melhora a prosódia, com maior tempo de geração.</p><div class="facts"><span>Português ✓</span><span>CPU ✓</span><span>Sem seletor de emoção</span></div><div class="footnote">Foco: rapidez sem NVIDIA · exige aceite da licença dos pesos</div></article>
+        <article class="motor motor-featured" data-pt="yes" data-cpu="yes" data-emotion="yes"><div class="cap"><span class="engine-icon">✦</span><span class="flag good">EXPRESSIVO</span></div><h3>VoxCPM2</h3><p>Modelo de 2 bilhões de parâmetros. Combina uma referência vocal com instruções de estilo, ritmo e emoção. Aceita português e gera áudio a 48 kHz. Deve pesar bastante no Ryzen sem aceleração.</p><div class="facts"><span>Português ✓</span><span>CPU ✓</span><span>Emoção por instrução</span></div><div class="footnote">Foco: clonagem + interpretação · precisa instalar à parte</div></article>
+        <article class="motor" data-pt="no" data-cpu="yes" data-emotion="yes"><div class="cap"><span class="engine-icon">◉</span><span class="flag warn">SEM PT OFICIAL</span></div><h3>IndexTTS 2.5</h3><p>Tem controles avançados de emoções, inclusive intensidade. Porém sua lista oficial é chinês, inglês, japonês, espanhol e árabe. Não é a indicação principal para português brasileiro.</p><div class="facts"><span>Clonagem ✓</span><span>CPU ✓</span><span>8 emoções</span></div><div class="footnote">Foco: emoções controláveis, em idiomas suportados</div></article>
+        <article class="motor" data-pt="no" data-cpu="yes" data-emotion="yes"><div class="cap"><span class="engine-icon">♫</span><span class="flag warn">SEM PT OFICIAL</span></div><h3>CosyVoice 3</h3><p>Ótimos recursos de direção, risadas, respiração e ênfase. Mas o modelo oficial apresenta nove idiomas e não inclui português. A instalação baixa aproximadamente 5,4 GB em pesos.</p><div class="facts"><span>Clonagem ✓</span><span>CPU ✓</span><span>Direção emocional</span></div><div class="footnote">Foco: interpretação em idiomas oficialmente compatíveis</div></article>
+        <article class="motor" data-pt="no" data-cpu="yes" data-emotion="yes"><div class="cap"><span class="engine-icon">GPU</span><span class="flag warn">EN / ZH</span></div><h3>Breeze-TTS-2 / audio.cpp</h3><p>O caso especial que usa sua Radeon RX 7600 no Windows via Vulkan. Seus pesos GGUF Q8 ocupam cerca de 4,73 GiB. Porém os idiomas oferecidos são inglês e chinês, não português.</p><div class="facts"><span>Vulkan na RX 7600</span><span>8 GB VRAM adequados</span><span>PT não suportado</span></div><div class="footnote">Foco: aceleração AMD, mas com limitação de idiomas</div></article>
+      </div>
+    </section>
+
+    <section class="content wrap" id="hardware">
+      <div class="section-top"><div><p class="micro kicker">05 / Avaliação do seu hardware</p><h2>Seu PC no<br><span class="outline">laboratório.</span></h2></div><p>Ryzen 5 5600, quatro pentes DDR4 e RX 7600. O gargalo real, no Windows, é o suporte dos motores de IA à GPU AMD — não simplesmente a quantidade de RAM.</p></div>
+      <div class="spec-sheet">
+        <div class="device">
+          <p class="micro">Máquina de teste · configuração informada</p><h3>RYZEN / RX</h3>
+          <svg viewBox="0 0 400 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Diagrama ilustrativo de processador, quatro módulos de RAM e placa gráfica">
+            <defs><linearGradient id="board" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#34455b"/><stop offset="1" stop-color="#1b2837"/></linearGradient></defs>
+            <rect x="22" y="12" width="356" height="216" rx="18" fill="url(#board)" stroke="#667991" stroke-width="1.5"/>
+            <g stroke="#66829e" stroke-width="2" fill="none" opacity=".45"><path d="M160 76H220V30h58M160 110H234V76h119M160 149H220v57h120M80 175H47v32h70"/><path d="M145 29h-60v42H49M322 179h38v30"/></g>
+            <rect x="57" y="58" width="120" height="118" rx="11" fill="#101b28" stroke="#a6cde2" stroke-width="2"/><rect x="75" y="76" width="84" height="81" rx="8" fill="#25364b" stroke="#7c97b2"/>
+            <text x="117" y="110" fill="#c9f179" font-size="16" text-anchor="middle" font-weight="800">R5</text><text x="117" y="133" fill="#dce5f0" font-size="12" text-anchor="middle">5600</text>
+            <g fill="#c9f179" stroke="#c9f179"><rect x="210" y="36" width="20" height="102" rx="4"/><rect x="236" y="36" width="20" height="102" rx="4"/><rect x="262" y="36" width="20" height="102" rx="4"/><rect x="288" y="36" width="20" height="102" rx="4"/></g>
+            <g fill="#213126"><rect x="215" y="47" width="10" height="12" rx="2"/><rect x="241" y="47" width="10" height="12" rx="2"/><rect x="267" y="47" width="10" height="12" rx="2"/><rect x="293" y="47" width="10" height="12" rx="2"/></g>
+            <rect x="199" y="159" width="143" height="46" rx="9" fill="#ff987e"/><circle cx="240" cy="182" r="15" fill="#ad5247" stroke="#ffe3ce"/><circle cx="300" cy="182" r="15" fill="#ad5247" stroke="#ffe3ce"/><text x="271" y="222" fill="#b5c9dc" font-size="10" text-anchor="middle">RX 7600</text>
+          </svg>
+          <div class="spec-row"><span>Processador</span><strong>Ryzen 5 5600 · 6C / 12T</strong></div>
+          <div class="spec-row"><span>Memória</span><strong>32 GB DDR4 · 4×8 · 3200</strong></div>
+          <div class="spec-row"><span>Placa gráfica</span><strong>Radeon RX 7600 · 8 GB</strong></div>
+          <div class="spec-row"><span>Sistema</span><strong>Windows 11 Pro</strong></div>
+          <div class="spec-row"><span>SSD</span><strong>2 × 512 GB</strong></div>
+        </div>
+        <div class="capabilities">
+          <p class="micro kicker">Onde está o limite?</p><h3>Compatibilidade ≠ velocidade.</h3>
+          <div class="ability"><span class="mark">✓</span><div><h4>32 GB de RAM ajudam bastante</h4><p>Você supera os 16 GB recomendados para o aplicativo. A memória dá margem aos modelos, mas não torna automaticamente rápida a inferência na CPU.</p></div></div>
+          <div class="ability"><span class="mark">✓</span><div><h4>Clonagem local: possível</h4><p>PocketTTS, OmniVoice e VoxCPM2 têm execução em CPU. Para começar com agilidade, o PocketTTS é a escolha mais racional.</p></div></div>
+          <div class="ability alert"><span class="mark">!</span><div><h4>RX 7600 não acelera o PyTorch padrão no Windows</h4><p>A distribuição do VoiceStudio utiliza CUDA para aceleração PyTorch no Windows. A Radeon fica de fora desses motores; ROCm é tratado separadamente no Linux.</p></div></div>
+          <div class="ability alert"><span class="mark">!</span><div><h4>VoxCPM2: geração potencialmente lenta</h4><p>O modelo pode rodar na CPU, mas é muito mais pesado. Não existe benchmark publicado para o seu Ryzen 5600: qualquer promessa de “X segundos” seria chute.</p></div></div>
+          <div class="notice"><strong>Armazenamento:</strong> a instalação inicial pede em torno de 10 GB livres. Motores adicionais e caches podem acrescentar vários GB. O instalador informa o espaço antes de instalar cada motor.</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content wrap" id="expressao">
+      <div class="section-top"><div><p class="micro kicker">06 / Interpretação</p><h2>Clonar timbre é uma coisa.<br><span class="outline">Atuar é outra.</span></h2></div><p>Exemplos de instrução do VoxCPM2 em português. Clique para alternar o direcionamento e observar como o texto de entrada muda. Isso não é um player de áudio.</p></div>
+      <div class="lab">
+        <div><span class="pill"><span class="dot"></span> SIMULAÇÃO DE PROMPT</span><h3>Mesma voz.<br>Três intenções.</h3><p>A identidade vocal vem da referência. O texto e a orientação de estilo tentam alterar ritmo, energia e emoção da fala sintetizada.</p><p class="tiny-note">Instruções são orientativas, não garantias de resultado. Ouvindo a saída real você pode avaliar a naturalidade.</p></div>
+        <div class="console">
+          <div class="console-top"><div class="lights"><i></i><i></i><i></i></div><span>VoxCPM2 · exemplo ilustrativo</span><span>TXT → WAV</span></div>
+          <pre class="console-code" id="scriptCode" aria-live="polite"><span class="code-instruct">(em um tom calmo e natural)</span>
+<span class="code-normal">Eu achei que esse momento nunca ia chegar. Que bom que você está aqui.</span></pre>
+          <div class="console-actions"><div class="switches" role="group" aria-label="Intenção emocional"><button type="button" class="active" data-tone="calmo" aria-pressed="true">Calmo</button><button type="button" data-tone="dramatico" aria-pressed="false">Dramático</button><button type="button" data-tone="feliz" aria-pressed="false">Feliz</button></div><button class="copy" type="button" id="copyScript">Copiar texto</button></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="content wrap" id="conclusao">
+      <div class="section-top"><div><p class="micro kicker">07 / O veredito</p><h2>Duas propostas.<br><span class="outline">Dois caminhos.</span></h2></div><p>Não é uma briga apenas de “qual soa melhor”. Um é um ecossistema local e modular; o outro oferece modelos hospedados e uma experiência pronta de produção.</p></div>
+      <div class="vs">
+        <article class="vs-card"><span class="micro badge">VOICE STUDIO</span><h3>Liberdade local.</h3><ul><li>Uso no próprio computador, sem necessidade de API paga para os modelos locais.</li><li>Escolha entre diferentes motores de clonagem, dublagem e transcrição.</li><li>Mais controle sobre arquivos e modelos instalados.</li><li>Qualidade e velocidade variam muito; configurar motores extras exige atenção.</li><li>Na sua RX 7600, os motores PyTorch normalmente dependem do CPU no Windows.</li></ul></article>
+        <article class="vs-card"><span class="micro badge">ELEVENLABS</span><h3>Produção hospedada.</h3><ul><li>Modelos Eleven v3/v4 voltados à naturalidade, emoções e direção de interpretação.</li><li>Clonagem instantânea e profissional, biblioteca de vozes e fluxos prontos.</li><li>Inferência executada na infraestrutura da plataforma; seu Ryzen não é o gargalo.</li><li>Controle emocional por tags em modelos compatíveis.</li><li>Serviço com planos e limites; não é uma IA integralmente local.</li></ul></article>
+      </div>
+      <div class="end-verdict"><div><p class="micro">CONCLUSÃO / PARA O RYZEN 5600</p><h3>Comece com PocketTTS. Compare com OmniVoice. Experimente VoxCPM2 para atuação.</h3><p>Há evidência de clonagem forte, mas a comparação publicada com ElevenLabs v2 não demonstra paridade com v4 em emoção ou naturalidade. A confirmação vem de um teste auditivo na mesma voz, com o mesmo texto.</p></div><a href="https://github.com/debpalash/VoiceStudio/releases" target="_blank" rel="noopener noreferrer">Abrir releases ↗</a></div>
+    </section>
+
+    <section class="content wrap" id="fontes">
+      <div class="section-top"><div><p class="micro kicker">08 / Rastreabilidade</p><h2>Fontes<br><span class="outline">verificáveis.</span></h2></div><p>Links diretos para código e documentação oficiais. Os gráficos usam valores de pesquisas publicadas, sem inventar resultados no hardware pessoal.</p></div>
+      <div class="references">
+        <a href="https://github.com/debpalash/VoiceStudio" target="_blank" rel="noopener noreferrer"><span>01 · Repositório VoiceStudio<br><small>Aplicativo e recursos</small></span><b>↗</b></a>
+        <a href="https://github.com/debpalash/VoiceStudio/blob/main/docs/engines/README.md" target="_blank" rel="noopener noreferrer"><span>02 · Catálogo de motores<br><small>Idiomas, clonagem e execução</small></span><b>↗</b></a>
+        <a href="https://arxiv.org/abs/2604.00688" target="_blank" rel="noopener noreferrer"><span>03 · Artigo OmniVoice<br><small>Benchmark MiniMax-Multilingual-24</small></span><b>↗</b></a>
+        <a href="https://github.com/OpenBMB/VoxCPM" target="_blank" rel="noopener noreferrer"><span>04 · VoxCPM2 oficial<br><small>Expressividade, português e tamanho</small></span><b>↗</b></a>
+        <a href="https://github.com/debpalash/VoiceStudio/blob/main/docs/install/windows.md" target="_blank" rel="noopener noreferrer"><span>05 · Instalação Windows<br><small>AMD, CPU e uso de disco</small></span><b>↗</b></a>
+        <a href="https://github.com/debpalash/VoiceStudio/blob/main/docs/expressive-speech.md" target="_blank" rel="noopener noreferrer"><span>06 · Fala expressiva<br><small>Tags, limites e controles</small></span><b>↗</b></a>
+        <a href="https://github.com/debpalash/VoiceStudio/blob/main/docs/benchmarks.md" target="_blank" rel="noopener noreferrer"><span>07 · Benchmarks VoiceStudio<br><small>Sem linha verificada para Ryzen 5600</small></span><b>↗</b></a>
+        <a href="https://elevenlabs.io/docs/overview/models" target="_blank" rel="noopener noreferrer"><span>08 · Modelos ElevenLabs<br><small>v2, v3 e v4; recursos atuais</small></span><b>↗</b></a>
+        <a href="https://github.com/debpalash/VoiceStudio/blob/main/docs/engines/pockettts.md" target="_blank" rel="noopener noreferrer"><span>09 · PocketTTS no VoiceStudio<br><small>CPU, português e prosódia</small></span><b>↗</b></a>
+        <a href="https://github.com/debpalash/VoiceStudio/blob/main/docs/engines/audio-cpp.md" target="_blank" rel="noopener noreferrer"><span>10 · audio.cpp / Breeze<br><small>Vulkan, VRAM e idiomas</small></span><b>↗</b></a>
+      </div>
+      <p class="method">Metodologia: os resultados de similaridade/erro em português vêm da Tabela 3 do artigo do OmniVoice e referem-se ao ElevenLabs Multilingual v2. Não representam testes de escuta independentes, nem comparação com Eleven v4. Informações técnicas consultadas em 24/10/2026; implementações podem mudar.</p>
+    </section>
+  </main>
+
+  <footer><div class="wrap"><span>≋ LAB / VOZ · sonyddr666 / Pages</span><span>HTML independente · 24.10.2026 · <a href="../">Voltar ao catálogo</a></span></div></footer>
+  <button class="up" id="backTop" type="button" aria-label="Voltar ao topo">↑</button>
+
+  <script>
+    (() => {
+      'use strict';
+      const metricData = {
+        similarity: {title:'Similaridade com a referência (SIM-o)',hint:'Maior é melhor ↑',omni:'0,859',eleven:'0,711',omniWidth:85.9,elevenWidth:71.1,reading:'Nesse teste automático, o OmniVoice obteve mais semelhança com a voz original. Isso não garante uma interpretação mais humana ou mais emotiva.'},
+        wer: {title:'Taxa de erro de palavras (WER)',hint:'Menor é melhor ↓',omni:'2,511%',eleven:'1,331%',omniWidth:83.7,elevenWidth:44.4,reading:'Na pronúncia das palavras, o ElevenLabs Multilingual v2 teve menos erros. Aqui a barra maior representa mais erro, portanto é pior. Nenhuma dessas medidas avalia atuação emocional.'}
+      };
+      const $ = id => document.getElementById(id);
+      document.querySelectorAll('[data-metric]').forEach(button => {
+        button.addEventListener('click', () => {
+          const m = metricData[button.dataset.metric];
+          document.querySelectorAll('[data-metric]').forEach(b => {const on = b === button;b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on));});
+          $('metricName').textContent=m.title;$('metricHint').textContent=m.hint;$('omniValue').textContent=m.omni;$('elevenValue').textContent=m.eleven;$('omniBar').style.width=m.omniWidth+'%';$('elevenBar').style.width=m.elevenWidth+'%';$('metricReading').textContent=m.reading;
+        });
+      });
+      document.querySelectorAll('[data-filter]').forEach(button => {
+        button.addEventListener('click', () => {
+          const mode=button.dataset.filter;
+          document.querySelectorAll('[data-filter]').forEach(b=>{const on=b===button;b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on));});
+          document.querySelectorAll('.motor').forEach(card=>{card.hidden=mode!=='all'&&card.dataset[mode]!=='yes';});
+        });
+      });
+      const tones = {
+        calmo:['(em um tom calmo e natural)','Eu achei que esse momento nunca ia chegar. Que bom que você está aqui.'],
+        dramatico:['(falando lentamente, com a voz embargada e suspense)','Eu achei que esse momento nunca ia chegar... Que bom que você está aqui.'],
+        feliz:['(com muita alegria, sorriso na voz e ritmo animado)','Eu achei que esse momento nunca ia chegar! Que bom que você está aqui!']
+      };
+      let activeTone='calmo';
+      const escapeHTML=s=>s.replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+      document.querySelectorAll('[data-tone]').forEach(button=>{
+        button.addEventListener('click',()=>{
+          activeTone=button.dataset.tone;
+          document.querySelectorAll('[data-tone]').forEach(b=>{const on=b===button;b.classList.toggle('active',on);b.setAttribute('aria-pressed',String(on));});
+          const [instruct,text]=tones[activeTone];
+          $('scriptCode').innerHTML='<span class="code-instruct">'+escapeHTML(instruct)+'</span>\n<span class="code-normal">'+escapeHTML(text)+'</span>';
+        });
+      });
+      $('copyScript').addEventListener('click',async()=>{
+        const [a,b]=tones[activeTone];
+        const content=a+'\n'+b;
+        try{await navigator.clipboard.writeText(content);$('copyScript').textContent='Copiado ✓';}
+        catch(_){const area=document.createElement('textarea');area.value=content;area.style.position='fixed';area.style.opacity='0';document.body.append(area);area.select();const ok=document.execCommand('copy');area.remove();$('copyScript').textContent=ok?'Copiado ✓':'Selecione e copie';}
+        window.setTimeout(()=>$('copyScript').textContent='Copiar texto',1800);
+      });
+      const up=$('backTop');
+      const syncTop=()=>up.classList.toggle('show',window.scrollY>540);
+      window.addEventListener('scroll',syncTop,{passive:true});syncTop();
+      up.addEventListener('click',()=>window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'}));
+      window.addEventListener('keydown',ev=>{if(ev.key==='Escape'&&window.location.hash){history.replaceState(null,'',window.location.pathname+window.location.search);window.scrollTo({top:0,behavior:'smooth'});}});
+    })();
+  </script>
+</body>
+</html>
