@@ -1,6 +1,16 @@
 {
   "pages": [
     {
+      "title": "VoiceStudio × ElevenLabs — Laboratório de voz",
+      "description": "Dossiê visual e interativo: VoiceStudio contra ElevenLabs, clonagem vocal, emoções, benchmarks em português e execução no Ryzen 5 5600 com RX 7600.",
+      "file": "voicestudio-vs-elevenlabs.html",
+      "category": "Outros",
+      "tags": [],
+      "created": "2026-10-24",
+      "updated": "2026-10-24",
+      "views": 0
+    },
+    {
       "title": "Da ideia ao projeto — Sistema de Organização",
       "description": "Um guia visual e interativo para transformar ideias soltas em projetos organizados no WSL, validados com critérios claros e versionados no GitHub.",
       "file": "organizacao-projetos.html",
